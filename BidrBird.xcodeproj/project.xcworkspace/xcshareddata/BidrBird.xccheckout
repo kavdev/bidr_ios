@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>88C7B5CA-A5A1-4385-A5C4-8A8FBCDE5DF9</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BidrBird</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</key>
+		<string>https://bitbucket.org/windows9/bidr_ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BidrBird.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/windows9/bidr_ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BidrBird</string>
+		</dict>
+	</array>
+</dict>
+</plist>
