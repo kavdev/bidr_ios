@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "OngoingAuction.h"
 #import "OngoingAuctionTableViewController.h"
+#import "HTTPRequest.h"
+#import "NavigationController.h"
 
-@interface NewAuctionViewController : UIViewController
+@interface NewAuctionViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *auctionIDTextEditor;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextEditor;

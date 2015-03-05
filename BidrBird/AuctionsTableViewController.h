@@ -11,13 +11,15 @@
 #import "OngoingAuction.h"
 #import "OngoingAuctionTableViewController.h"
 #import "CompleteAuctionTableViewController.m"
+#import "NavigationController.h"
+#import "HTTPRequest.h"
 
-@interface AuctionsTableViewController : UITableViewController {
-   NSArray *ongoingAuctions;
-   NSArray *completeAuctions;
+@interface AuctionsTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
+   NSMutableArray *ongoingAuctions;
+   NSMutableArray *completeAuctions;
 }
 
--(id) initWithOngoingAuctions:(NSArray*)ongoing completeAuctions:(NSArray*)complete;
+-(id) initWithOngoingAuctions:(NSMutableArray*)ongoing completeAuctions:(NSMutableArray*)complete;
 
 - (IBAction)signOut:(id)sender;
 

@@ -12,12 +12,21 @@
 
 @implementation CompleteAuction
 
-- (id) initWithBoughItems:(NSArray*)items name:(NSString*)name picture:(UIImage*)picture {
+- (id) initWithBoughtItems:(NSArray*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
    self->boughtItems = items;
    self->name = name;
    self->picture = picture;
+    self->auctionID = auctionid;
    
    return self;
+}
+
+-(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
+    self->name = name;
+    self->picture = picture;
+    self->auctionID = auctionid;
+    
+    return self;
 }
 
 - (NSArray*) getBoughtItems {

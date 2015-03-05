@@ -10,13 +10,22 @@
 
 @implementation OngoingAuction
 
--(id) initWithBidOnItems:(NSArray*)items otherItems:(NSArray*)otherItems name:(NSString*)name picture:(UIImage*)picture {
+-(id) initWithBidOnItems:(NSArray*)items otherItems:(NSArray*)otherItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
    self->bidOnItems = items;
    self->otherItems = otherItems;
    self->name = name;
    self->picture = picture;
+    self->auctionID = auctionid;
    
    return self;
+}
+
+-(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
+    self->name = name;
+    self->picture = picture;
+    self->auctionID = auctionid;
+    
+    return self;
 }
 
 - (NSArray*) getBidOnItems {

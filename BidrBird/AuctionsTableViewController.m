@@ -16,15 +16,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
    
    NSString* imageName = [[NSBundle mainBundle] pathForResource:@"iPhone" ofType:@"jpg"];
    NSString* imageName2 = [[NSBundle mainBundle] pathForResource:@"Toy" ofType:@"jpg"];
    NSString* imageName3 = [[NSBundle mainBundle] pathForResource:@"Chair" ofType:@"jpg"];
    NSString* blueHouseName = [[NSBundle mainBundle] pathForResource:@"BlueHouse" ofType:@"jpg"];
    NSString* redHouseName = [[NSBundle mainBundle] pathForResource:@"RedHouse" ofType:@"jpg"];
-   self->ongoingAuctions = [NSArray arrayWithObject:[[OngoingAuction alloc] initWithBidOnItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"iPhone" description:@"An iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:1],[[Item alloc] initWithName:@"iPhone2" description:@"Another iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:2] ,nil] otherItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Toy" description:@"A Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:1],[[Item alloc] initWithName:@"Toy 2" description:@"Another Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:2] ,nil] name:@"RedHouse" picture:[[UIImage alloc] initWithContentsOfFile:redHouseName]]];
-   self->completeAuctions = [NSArray arrayWithObject:[[CompleteAuction alloc] initWithBoughItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Sock" description:@"A Sock" highestBid:2 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:1],[[Item alloc] initWithName:@"Sock2" description:@"Another Sock" highestBid:1.55 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:2] ,nil] name:@"BlueHouse" picture:[[UIImage alloc] initWithContentsOfFile:blueHouseName]]];
+//   self->ongoingAuctions = [NSMutableArray arrayWithObject:[[OngoingAuction alloc] initWithBidOnItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"iPhone" description:@"An iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:1],[[Item alloc] initWithName:@"iPhone2" description:@"Another iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:2] ,nil] otherItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Toy" description:@"A Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:1],[[Item alloc] initWithName:@"Toy 2" description:@"Another Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:2] ,nil] name:@"RedHouse" picture:[[UIImage alloc] initWithContentsOfFile:redHouseName]]];
+//   self->completeAuctions = [NSMutableArray arrayWithObject:[[CompleteAuction alloc] initWithBoughtItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Sock" description:@"A Sock" highestBid:2 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:1],[[Item alloc] initWithName:@"Sock2" description:@"Another Sock" highestBid:1.55 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:2] ,nil] name:@"BlueHouse" picture:[[UIImage alloc] initWithContentsOfFile:blueHouseName]]];
     
+    
+//    NSString *extension = [NSString stringWithFormat:@"bidruser/%@/get-auctions-participating-in/", ((NavigationController *)self.parentViewController).user_id];
+//    //NSString *get = [NSString stringWithFormat:@"email=%@", ((NavigationController *)self.parentViewController).user_email];
+//    
+//    [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
+        
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -37,7 +46,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithOngoingAuctions:(NSArray*)ongoing completeAuctions:(NSArray*)complete {
+-(id) initWithOngoingAuctions:(NSMutableArray*)ongoing completeAuctions:(NSMutableArray*)complete {
    self->completeAuctions = complete;
    self->ongoingAuctions = ongoing;
    
@@ -116,6 +125,62 @@
       vc = [(CompleteAuctionTableViewController*)vc initWithBoughtItems:completeAuction.getBoughtItems];
    }
    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// This method is used to receive the data which we get using post method.
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {    
+    NSLog(@"Received Data!");
+    NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSLog(@"jsonString: %@", jsonString);
+    if ([jsonDict objectForKey:@"participants"] != nil) {
+        NSArray *auctionsSignedUpFor = [jsonDict objectForKey:@"participants"];
+        
+        for (int count = 0; count < auctionsSignedUpFor.count; count++) {
+            NSString *extension = [NSString stringWithFormat:@"auctions/%@/get=auction-data/", auctionsSignedUpFor[count]];
+            [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
+        }
+    } else {
+        NSString *name;
+        NSString *auctionid;
+        if ([jsonDict objectForKey:@"name"] != nil) {
+            name = [jsonDict objectForKey:@"name"];
+        }
+        if ([jsonDict objectForKey:@"id"] != nil) {
+            auctionid = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
+        }
+        if ([jsonDict objectForKey:@"stage"] != nil) {
+            if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] <= 1) {
+                if (self->ongoingAuctions == nil) {
+                    self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                } else {
+                    [self->ongoingAuctions addObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                }
+            } else {
+                if (self->completeAuctions == nil) {
+                    self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                } else {
+                    [self->completeAuctions addObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                }
+            }
+            [self.tableView reloadData];
+        }
+    }
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"Finished Loading");
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    //dont do anything
 }
 
 /*

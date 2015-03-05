@@ -45,9 +45,9 @@
     if (self.nameTextField.text.length > 0 && self.emailTextField.text.length > 0 && self.phoneNumberTextField.text.length > 0 && self.passwordTextField.text.length > 0 && self.confirmPasswordTextField.text.length > 0) {
         if ([self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text]) {
             
-            NSString *post = [NSString stringWithFormat:@"name=%@&email=%@&phone_number=%@&password=%@", self.nameTextField.text, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
+            NSString *post = [NSString stringWithFormat:@"name=%@&email=%@&phone_number=%%2B1%@&password=%@", self.nameTextField.text, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
             
-            [HTTPRequest POST:post toExtension:@"register" delegate:self];
+            [HTTPRequest POST:post toExtension:@"auth/register/" delegate:self];
         }
     }
 }
@@ -69,13 +69,15 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     
-    if ([jsonDict objectForKey:@"token"] != nil) {
-        self.token = [jsonDict objectForKey:@"token"];
+    if ([jsonDict objectForKey:@"auth_token"] != nil) {
+        self.token = [jsonDict objectForKey:@"auth_token"];
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
+        ((NavigationController *) vc).auth_token = self.token;
+        [HTTPRequest GET:@"" toExtension:@"auth/me/" withAuthToken:self.token delegate:vc];
         vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:vc animated:YES completion:NULL];
-        NSLog(@"token: %@", self.token);
+        NSLog(@"auth_token: %@", self.token);
     } else if ([jsonDict objectForKey:@"email"] != nil) {
         if ([((NSString *)[((NSArray*)[jsonDict objectForKey:@"email"]) objectAtIndex:0]) isEqualToString:@"This field must be unique."]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email already in use" message:@"There is already an account using this email address.  Please use a different email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

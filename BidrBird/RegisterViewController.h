@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HTTPRequest.h"
+#import "NavigationController.h"
 
 @interface RegisterViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate>
 

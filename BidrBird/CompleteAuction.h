@@ -15,9 +15,11 @@
    NSArray *boughtItems;
    NSString *name;
    UIImage *picture;
+    NSString *auctionID;
 }
 
--(id) initWithBoughItems:(NSArray*)items name:(NSString*)name picture:(UIImage*)picture;
+-(id) initWithBoughtItems:(NSArray*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+-(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
 
 - (NSArray*) getBoughtItems;
 - (NSString*) getName;

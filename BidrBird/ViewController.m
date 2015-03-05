@@ -32,15 +32,15 @@
     if (self.emailTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", self.emailTextField.text, self.passwordTextField.text];
         
-        [HTTPRequest POST:post toExtension:@"login" delegate:self];
+        [HTTPRequest POST:post toExtension:@"auth/login/" delegate:self];
     }
     
     
     
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
-    vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self presentViewController:vc animated:YES completion:NULL];
+//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
+//    vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//    [self presentViewController:vc animated:YES completion:NULL];
 }
 
 - (IBAction)dismissKeyboard:(id)sender {
@@ -56,16 +56,16 @@
     NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
-    NSObject* thing = [jsonDict objectForKey:@"email"];
-    NSObject* thing2 = [jsonDict objectForKey:@"none"];
-    if ([jsonDict objectForKey:@"token"] != nil) {
-        token = [jsonDict objectForKey:@"token"];
+    if ([jsonDict objectForKey:@"auth_token"] != nil) {
+        token = [jsonDict objectForKey:@"auth_token"];
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
+        ((NavigationController *) vc).auth_token = token;
+        [HTTPRequest GET:@"" toExtension:@"auth/me/" withAuthToken:token delegate:vc];
         vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:vc animated:YES completion:NULL];
         //[self presentViewController:[[NavigationController alloc] init] animated:TRUE completion:nil];
-        NSLog(@"token: %@", token);
+        NSLog(@"auth_token: %@", token);
     } else if([jsonDict objectForKey:@"non_field_errors"] != nil) {
         NSString *errorString = [((NSArray*)[jsonDict objectForKey:@"non_field_errors"]) objectAtIndex:0];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email or password" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Forgot password", nil];

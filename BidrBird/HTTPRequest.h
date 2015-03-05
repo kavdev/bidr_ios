@@ -12,5 +12,7 @@
 
 + (void) POST:(NSString *)post toExtension:(NSString *)extension delegate:(id)delegate;
 + (void) POST:(NSString *)post toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate;
++ (void) PUT:(NSString *)put toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate;
++ (void) GET:(NSString *)get toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate;
 
 @end
