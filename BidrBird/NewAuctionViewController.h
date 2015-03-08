@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "OngoingAuction.h"
 #import "OngoingAuctionTableViewController.h"
+#import "CompleteAuction.h"
+#import "CompleteAuctionTableViewController.h"
+#import "UpcomingAuction.h"
+#import "UpcomingAuctionTableViewController.h"
 #import "HTTPRequest.h"
 #import "NavigationController.h"
 

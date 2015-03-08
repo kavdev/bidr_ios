@@ -66,7 +66,6 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
     NSString *extension = [NSString stringWithFormat:@"users/%@/get-auctions-participating-in/", self.user_id];
-    //NSString *get = [NSString stringWithFormat:@"email=%@", ((NavigationController *)self.parentViewController).user_email];
     
     [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.auth_token delegate:[self topViewController]];
 }

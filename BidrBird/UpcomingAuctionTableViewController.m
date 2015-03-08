@@ -17,11 +17,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.refreshControl = refreshControl;
+    self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+    [self.refreshControl beginRefreshing];
+}
+
+- (void)refresh {
+    NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/get-auction-bidables/", [self->auction getAuctionID]];
+    
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,6 +107,7 @@
     
     if([jsonDict objectForKey:@"bidables"] != nil) {
         NSArray *bidables = [jsonDict objectForKey:@"bidables"];
+        [self->auction->items removeAllObjects];
         
         for (int count = 0; count < bidables.count; count++) {
             jsonDict = bidables[count];
@@ -149,12 +157,16 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"FAIL");
     NSLog([error description]);
+    [self.refreshControl endRefreshing];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 // This method is used to process the data after connection has made successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
     [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

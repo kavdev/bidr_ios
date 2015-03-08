@@ -19,6 +19,19 @@
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    
+    self.refreshControl = refreshControl;
+    self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+    [self.refreshControl beginRefreshing];
+}
+
+- (void) refresh {
+    NSString *extension = [NSString stringWithFormat:@"users/%@/get-auctions-participating-in/", ((NavigationController*)self.navigationController).user_id];
+    
+    [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,6 +48,7 @@
 }
 
 - (IBAction)signOut:(id)sender {
+    [HTTPRequest POST:@"" toExtension:@"auth/logout/" withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
    [self dismissViewControllerAnimated:TRUE completion:nil];
 }
 
@@ -128,6 +142,9 @@
     NSLog(@"jsonString: %@", jsonString);
     if ([jsonDict objectForKey:@"participants"] != nil) {
         NSArray *auctionsSignedUpFor = [jsonDict objectForKey:@"participants"];
+        [self->upcomingAuctions removeAllObjects];
+        [self->completeAuctions removeAllObjects];
+        [self->ongoingAuctions removeAllObjects];
         
         for (int count = 0; count < auctionsSignedUpFor.count; count++) {
             jsonDict = auctionsSignedUpFor[count];
@@ -168,12 +185,16 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"FAIL");
     NSLog([error description]);
+    [self.refreshControl endRefreshing];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 // This method is used to process the data after connection has made successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
     [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
