@@ -19,9 +19,10 @@
    NSString *condition;
    UIImage *picture;
    int itemID;
+    double minBid;
 }
 
-- (id) initWithName:(NSString*)name description:(NSString*)description highestBid: (double)highestBid condition:(NSString*)condition picture:(UIImage*)picture itemID:(int)itemID;
+- (id) initWithName:(NSString*)name description:(NSString*)description highestBid: (double)highestBid condition:(NSString*)condition picture:(UIImage*)picture itemID:(int)itemID minimumBid:(double)minBid;
 
 - (NSString*) getName;
 - (NSString*) getDescription;

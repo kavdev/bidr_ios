@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #include "Item.h"
+#include "NavigationController.h"
+#include "HTTPRequest.h"
 
 @interface OngoingAuctionItemViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
    Item *item;
@@ -26,6 +28,5 @@
 - (IBAction)startedEditing:(id)sender;
 
 -(id) initWithItem:(Item*)items;
-- (void) loadHighestBid;
 
 @end

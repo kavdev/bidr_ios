@@ -19,26 +19,6 @@
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-   
-   NSString* imageName = [[NSBundle mainBundle] pathForResource:@"iPhone" ofType:@"jpg"];
-   NSString* imageName2 = [[NSBundle mainBundle] pathForResource:@"Toy" ofType:@"jpg"];
-   NSString* imageName3 = [[NSBundle mainBundle] pathForResource:@"Chair" ofType:@"jpg"];
-   NSString* blueHouseName = [[NSBundle mainBundle] pathForResource:@"BlueHouse" ofType:@"jpg"];
-   NSString* redHouseName = [[NSBundle mainBundle] pathForResource:@"RedHouse" ofType:@"jpg"];
-//   self->ongoingAuctions = [NSMutableArray arrayWithObject:[[OngoingAuction alloc] initWithBidOnItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"iPhone" description:@"An iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:1],[[Item alloc] initWithName:@"iPhone2" description:@"Another iPhone" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName] itemID:2] ,nil] otherItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Toy" description:@"A Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:1],[[Item alloc] initWithName:@"Toy 2" description:@"Another Toy" highestBid:0 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName2] itemID:2] ,nil] name:@"RedHouse" picture:[[UIImage alloc] initWithContentsOfFile:redHouseName]]];
-//   self->completeAuctions = [NSMutableArray arrayWithObject:[[CompleteAuction alloc] initWithBoughtItems:[NSArray arrayWithObjects:[[Item alloc] initWithName:@"Sock" description:@"A Sock" highestBid:2 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:1],[[Item alloc] initWithName:@"Sock2" description:@"Another Sock" highestBid:1.55 condition:@"Used" picture:[[UIImage alloc] initWithContentsOfFile:imageName3] itemID:2] ,nil] name:@"BlueHouse" picture:[[UIImage alloc] initWithContentsOfFile:blueHouseName]]];
-    
-    
-//    NSString *extension = [NSString stringWithFormat:@"bidruser/%@/get-auctions-participating-in/", ((NavigationController *)self.parentViewController).user_id];
-//    //NSString *get = [NSString stringWithFormat:@"email=%@", ((NavigationController *)self.parentViewController).user_email];
-//    
-//    [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
-        
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,11 +26,12 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithOngoingAuctions:(NSMutableArray*)ongoing completeAuctions:(NSMutableArray*)complete {
-   self->completeAuctions = complete;
-   self->ongoingAuctions = ongoing;
+-(id) initWithOngoingAuctions:(NSMutableArray*)ongoing completeAuctions:(NSMutableArray*)complete upcomingAuctions:(NSMutableArray*)upcoming {
+    self->upcomingAuctions = upcoming;
+    self->completeAuctions = complete;
+    self->ongoingAuctions = ongoing;
    
-   return self;
+    return self;
 }
 
 - (IBAction)signOut:(id)sender {
@@ -61,42 +42,48 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-   if (section == 0) {
-      return self->ongoingAuctions.count;
-   } else {
-      return self->completeAuctions.count;
-   }
+    if (section == 0) {
+        return self->upcomingAuctions.count;
+    } else if (section == 1) {
+        return self->ongoingAuctions.count;
+    } else {
+        return self->completeAuctions.count;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-   if(section == 0) {
-      return @"Current Auctions";
-   } else {
-      return @"Complete Auctions";
-   }
+    if (section == 0) {
+        return @"Upcoming Auctions";
+    } else if(section == 1) {
+        return @"Current Auctions";
+    } else {
+        return @"Complete Auctions";
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    static NSString *simpleTableIdentifier = @"Cell";
    
    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-   CompleteAuction *auction;
+   Auction *auction;
    
    if (cell == nil) {
       cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
    }
    
-   if (indexPath.section == 0) {
-      auction = ((CompleteAuction *)[self->ongoingAuctions objectAtIndex:indexPath.row]);
-   } else {
-      auction = ((CompleteAuction *)[self->completeAuctions objectAtIndex:indexPath.row]);
-   }
+    if (indexPath.section == 0) {
+        auction = ((UpcomingAuction *)[self->upcomingAuctions objectAtIndex:indexPath.row]);
+    } else if (indexPath.section == 1) {
+        auction = ((OngoingAuction *)[self->ongoingAuctions objectAtIndex:indexPath.row]);
+    } else {
+        auction = ((CompleteAuction *)[self->completeAuctions objectAtIndex:indexPath.row]);
+    }
    
    cell.textLabel.text = auction.getName;
    cell.imageView.image = auction.getPicture;
@@ -105,26 +92,32 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-   CompleteAuction *completeAuction;
-   OngoingAuction *ongoingAuction;
-   UIViewController * vc;
+    Auction *auction;
+    UIViewController * vc;
    
-   if (indexPath.section == 0) {
-      ongoingAuction = [self->ongoingAuctions objectAtIndex:indexPath.row];
-   } else {
-      completeAuction = [self->completeAuctions objectAtIndex:indexPath.row];
-   }
+    
+    if (indexPath.section == 0) {
+        auction = [self->upcomingAuctions objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 1) {
+        auction = [self->ongoingAuctions objectAtIndex:indexPath.row];
+    } else {
+        auction = [self->completeAuctions objectAtIndex:indexPath.row];
+    }
    
-   NSString * storyboardName = @"Main";
-   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
-   if (indexPath.section == 0) {
-      vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
-      vc = [(OngoingAuctionTableViewController*)vc initWithBidOnItems:ongoingAuction.getBidOnItems otherItems:ongoingAuction.getOtherItems];
-   } else {
-      vc = [storyboard instantiateViewControllerWithIdentifier:@"CompleteAuctionTableViewController"];
-      vc = [(CompleteAuctionTableViewController*)vc initWithBoughtItems:completeAuction.getBoughtItems];
-   }
-   [self.navigationController pushViewController:vc animated:YES];
+    NSString * storyboardName = @"Main";
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+    
+    if (indexPath.section == 0) {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
+        vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction navigationController:((NavigationController*)self.navigationController)];
+    } else if (indexPath.section == 1) {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
+        vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction navigationController:((NavigationController*)self.navigationController)];
+    } else {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"CompleteAuctionTableViewController"];
+        vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction navigationController:((NavigationController*)self.navigationController)];
+    }
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // This method is used to receive the data which we get using post method.
@@ -137,33 +130,36 @@
         NSArray *auctionsSignedUpFor = [jsonDict objectForKey:@"participants"];
         
         for (int count = 0; count < auctionsSignedUpFor.count; count++) {
-            NSString *extension = [NSString stringWithFormat:@"auctions/%@/get=auction-data/", auctionsSignedUpFor[count]];
-            [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
-        }
-    } else {
-        NSString *name;
-        NSString *auctionid;
-        if ([jsonDict objectForKey:@"name"] != nil) {
-            name = [jsonDict objectForKey:@"name"];
-        }
-        if ([jsonDict objectForKey:@"id"] != nil) {
-            auctionid = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
-        }
-        if ([jsonDict objectForKey:@"stage"] != nil) {
-            if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] <= 1) {
-                if (self->ongoingAuctions == nil) {
-                    self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+            jsonDict = auctionsSignedUpFor[count];
+            NSString *name;
+            NSString *auctionid;
+            if ([jsonDict objectForKey:@"name"] != nil) {
+                name = [jsonDict objectForKey:@"name"];
+            }
+            if ([jsonDict objectForKey:@"id"] != nil) {
+                auctionid = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
+            }
+            if ([jsonDict objectForKey:@"stage"] != nil) {
+                if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 0) {
+                    if (self->upcomingAuctions == nil) {
+                        self->upcomingAuctions = [[NSMutableArray alloc] initWithObjects:[[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                    } else {
+                        [self->upcomingAuctions addObject:[[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                    }
+                } else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
+                    if (self->ongoingAuctions == nil) {
+                        self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                    } else {
+                        [self->ongoingAuctions addObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                    }
                 } else {
-                    [self->ongoingAuctions addObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
-                }
-            } else {
-                if (self->completeAuctions == nil) {
-                    self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
-                } else {
-                    [self->completeAuctions addObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                    if (self->completeAuctions == nil) {
+                        self->completeAuctions = [[NSMutableArray alloc] initWithObjects:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                    } else {
+                        [self->completeAuctions addObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                    }
                 }
             }
-            [self.tableView reloadData];
         }
     }
 }
@@ -177,6 +173,7 @@
 // This method is used to process the data after connection has made successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
+    [self.tableView reloadData];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

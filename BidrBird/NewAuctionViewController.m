@@ -35,8 +35,8 @@
 */
 
 - (IBAction)connectToAuction:(id)sender {
-   OngoingAuction *ongoingAuction = nil;
-   UIViewController * vc;
+//   OngoingAuction *ongoingAuction = nil;
+//   UIViewController * vc;
    NSString *idString = self.auctionIDTextEditor.text;
    NSString *password = self.passwordTextEditor.text;
    
@@ -53,18 +53,19 @@
     
         [HTTPRequest PUT:put toExtension:extenstion withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
     }
-   
-   //ongoingAuction = //get from server
-   
-   if (ongoingAuction != nil) {
-      NSString * storyboardName = @"Main";
-      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
-      vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
-      vc = [(OngoingAuctionTableViewController*)vc initWithBidOnItems:ongoingAuction.getBidOnItems otherItems:ongoingAuction.getOtherItems];
-      [self.navigationController pushViewController:vc animated:YES];
-   } else {
-      //auction not valid
-   }
+    
+//   
+//   //ongoingAuction = //get from server
+//   
+//   if (ongoingAuction != nil) {
+//      NSString * storyboardName = @"Main";
+//      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+//      vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
+//      vc = [(OngoingAuctionTableViewController*)vc initWithBidOnItems:ongoingAuction.getBidOnItems otherItems:ongoingAuction.getOtherItems];
+//      [self.navigationController pushViewController:vc animated:YES];
+//   } else {
+//      //auction not valid
+//   }
 }
 
 // This method is used to receive the data which we get using post method.

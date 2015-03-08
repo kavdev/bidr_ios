@@ -18,7 +18,6 @@
 		14754AC91A2E6C390002CAB2 /* iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC81A2E6C390002CAB2 /* iPhone.jpg */; };
 		14754ACB1A2E6C440002CAB2 /* Chair.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754ACA1A2E6C440002CAB2 /* Chair.jpg */; };
 		14754ACD1A2E6D000002CAB2 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ACC1A2E6D000002CAB2 /* Item.m */; };
-		14754AD41A2EA3FD0002CAB2 /* CompleteAuctionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AD31A2EA3FD0002CAB2 /* CompleteAuctionViewController.m */; };
 		14754AD71A2EA4350002CAB2 /* NewAuctionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AD61A2EA4350002CAB2 /* NewAuctionViewController.m */; };
 		14754ADD1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ADC1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m */; };
 		14754AE01A2EA5020002CAB2 /* CompleteAuctionItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ADF1A2EA5020002CAB2 /* CompleteAuctionItemViewController.m */; };
@@ -26,15 +25,21 @@
 		14754AE91A2FF1890002CAB2 /* OngoingAuctionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AE81A2FF1890002CAB2 /* OngoingAuctionTableViewController.m */; };
 		14754AEC1A30030C0002CAB2 /* AuctionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AEB1A30030C0002CAB2 /* AuctionsTableViewController.m */; };
 		14754AEE1A300A370002CAB2 /* OngoingAuction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AED1A300A370002CAB2 /* OngoingAuction.m */; };
+		149A80841AAC716E00319A19 /* CompleteAuctionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AE51A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.m */; };
 		14E290F41A71983200924EEE /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E290F31A71983200924EEE /* NavigationController.m */; };
 		14E4D06B1A1EB46D005EA29D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D06A1A1EB46D005EA29D /* main.m */; };
 		14E4D06E1A1EB46D005EA29D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D06D1A1EB46D005EA29D /* AppDelegate.m */; };
-		14E4D0711A1EB46D005EA29D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D0701A1EB46D005EA29D /* ViewController.m */; };
+		14E4D0711A1EB46D005EA29D /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D0701A1EB46D005EA29D /* LogInViewController.m */; };
 		14E4D0741A1EB46D005EA29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14E4D0721A1EB46D005EA29D /* Main.storyboard */; };
 		14E4D0761A1EB46D005EA29D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14E4D0751A1EB46D005EA29D /* Images.xcassets */; };
 		14E4D0791A1EB46D005EA29D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E4D0771A1EB46D005EA29D /* LaunchScreen.xib */; };
 		14E4D0851A1EB46E005EA29D /* BidrBirdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D0841A1EB46E005EA29D /* BidrBirdTests.m */; };
 		14E4D08F1A1FEE61005EA29D /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */; };
+		14FA062F1AABC6460070821E /* UpcomingAuction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA062E1AABC6460070821E /* UpcomingAuction.m */; };
+		14FA06321AABC7830070821E /* Auction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA06311AABC7830070821E /* Auction.m */; };
+		14FA06381AABCDE90070821E /* UpcomingAuctionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA06371AABCDE90070821E /* UpcomingAuctionTableViewController.m */; };
+		14FA063B1AABD1900070821E /* UpcomingAuctionItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA063A1AABD1900070821E /* UpcomingAuctionItemViewController.m */; };
+		14FA063F1AAC661C0070821E /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA063E1AAC661C0070821E /* Bid.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +67,6 @@
 		14754ACA1A2E6C440002CAB2 /* Chair.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Chair.jpg; sourceTree = "<group>"; };
 		14754ACC1A2E6D000002CAB2 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		14754ACE1A2E6D0E0002CAB2 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		14754AD21A2EA3FD0002CAB2 /* CompleteAuctionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteAuctionViewController.h; sourceTree = "<group>"; };
-		14754AD31A2EA3FD0002CAB2 /* CompleteAuctionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteAuctionViewController.m; sourceTree = "<group>"; };
 		14754AD51A2EA4350002CAB2 /* NewAuctionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAuctionViewController.h; sourceTree = "<group>"; };
 		14754AD61A2EA4350002CAB2 /* NewAuctionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAuctionViewController.m; sourceTree = "<group>"; };
 		14754ADB1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OngoingAuctionItemViewController.h; sourceTree = "<group>"; };
@@ -87,8 +90,8 @@
 		14E4D06A1A1EB46D005EA29D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		14E4D06C1A1EB46D005EA29D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		14E4D06D1A1EB46D005EA29D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		14E4D06F1A1EB46D005EA29D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		14E4D0701A1EB46D005EA29D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		14E4D06F1A1EB46D005EA29D /* LogInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
+		14E4D0701A1EB46D005EA29D /* LogInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		14E4D0731A1EB46D005EA29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14E4D0751A1EB46D005EA29D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		14E4D0781A1EB46D005EA29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -97,6 +100,16 @@
 		14E4D0841A1EB46E005EA29D /* BidrBirdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BidrBirdTests.m; sourceTree = "<group>"; };
 		14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintManager.m; sourceTree = "<group>"; };
 		14E4D0901A1FEFE0005EA29D /* ConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintManager.h; sourceTree = "<group>"; };
+		14FA062D1AABC6460070821E /* UpcomingAuction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuction.h; sourceTree = "<group>"; };
+		14FA062E1AABC6460070821E /* UpcomingAuction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuction.m; sourceTree = "<group>"; };
+		14FA06301AABC7830070821E /* Auction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auction.h; sourceTree = "<group>"; };
+		14FA06311AABC7830070821E /* Auction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Auction.m; sourceTree = "<group>"; };
+		14FA06361AABCDE90070821E /* UpcomingAuctionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuctionTableViewController.h; sourceTree = "<group>"; };
+		14FA06371AABCDE90070821E /* UpcomingAuctionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuctionTableViewController.m; sourceTree = "<group>"; };
+		14FA06391AABD1900070821E /* UpcomingAuctionItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuctionItemViewController.h; sourceTree = "<group>"; };
+		14FA063A1AABD1900070821E /* UpcomingAuctionItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuctionItemViewController.m; sourceTree = "<group>"; };
+		14FA063D1AAC661C0070821E /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
+		14FA063E1AAC661C0070821E /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,32 +153,20 @@
 			children = (
 				14E4D06C1A1EB46D005EA29D /* AppDelegate.h */,
 				14E4D06D1A1EB46D005EA29D /* AppDelegate.m */,
-				14E4D06F1A1EB46D005EA29D /* ViewController.h */,
-				14E4D0701A1EB46D005EA29D /* ViewController.m */,
-				14754AEA1A30030C0002CAB2 /* AuctionsTableViewController.h */,
-				14754AEB1A30030C0002CAB2 /* AuctionsTableViewController.m */,
-				14754AB91A2E58060002CAB2 /* RegisterViewController.h */,
-				14754ABA1A2E58060002CAB2 /* RegisterViewController.m */,
+				14FA063C1AABD58A0070821E /* AuthenticationViews */,
 				14E290F21A71983100924EEE /* NavigationController.h */,
 				14E290F31A71983200924EEE /* NavigationController.m */,
-				14754ADE1A2EA5020002CAB2 /* CompleteAuctionItemViewController.h */,
-				14754ADF1A2EA5020002CAB2 /* CompleteAuctionItemViewController.m */,
-				14754ADB1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.h */,
-				14754ADC1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m */,
-				14754AE71A2FF1890002CAB2 /* OngoingAuctionTableViewController.h */,
-				14754AE81A2FF1890002CAB2 /* OngoingAuctionTableViewController.m */,
+				14754AEA1A30030C0002CAB2 /* AuctionsTableViewController.h */,
+				14754AEB1A30030C0002CAB2 /* AuctionsTableViewController.m */,
+				14FA06331AABCCAA0070821E /* Auctions */,
+				14FA06341AABCCE50070821E /* AuctionTableViewControllers */,
+				14FA06351AABCD040070821E /* AuctionItemViewControllers */,
 				14754AD51A2EA4350002CAB2 /* NewAuctionViewController.h */,
 				14754AD61A2EA4350002CAB2 /* NewAuctionViewController.m */,
-				14754AD21A2EA3FD0002CAB2 /* CompleteAuctionViewController.h */,
-				14754AD31A2EA3FD0002CAB2 /* CompleteAuctionViewController.m */,
-				14754AE41A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.h */,
-				14754AE51A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.m */,
-				14754AE31A2EAD570002CAB2 /* CompleteAuction.h */,
-				14754AE11A2EAD480002CAB2 /* CompleteAuction.m */,
-				14754AEF1A300A470002CAB2 /* OngoingAuction.h */,
-				14754AED1A300A370002CAB2 /* OngoingAuction.m */,
 				14754ACE1A2E6D0E0002CAB2 /* Item.h */,
 				14754ACC1A2E6D000002CAB2 /* Item.m */,
+				14FA063D1AAC661C0070821E /* Bid.h */,
+				14FA063E1AAC661C0070821E /* Bid.m */,
 				14E4D0901A1FEFE0005EA29D /* ConstraintManager.h */,
 				14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */,
 				14318C581A9180D900CE1797 /* HTTPRequest.h */,
@@ -210,6 +211,58 @@
 				14E4D0831A1EB46E005EA29D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		14FA06331AABCCAA0070821E /* Auctions */ = {
+			isa = PBXGroup;
+			children = (
+				14FA06301AABC7830070821E /* Auction.h */,
+				14FA06311AABC7830070821E /* Auction.m */,
+				14754AE31A2EAD570002CAB2 /* CompleteAuction.h */,
+				14754AE11A2EAD480002CAB2 /* CompleteAuction.m */,
+				14754AEF1A300A470002CAB2 /* OngoingAuction.h */,
+				14754AED1A300A370002CAB2 /* OngoingAuction.m */,
+				14FA062D1AABC6460070821E /* UpcomingAuction.h */,
+				14FA062E1AABC6460070821E /* UpcomingAuction.m */,
+			);
+			name = Auctions;
+			sourceTree = "<group>";
+		};
+		14FA06341AABCCE50070821E /* AuctionTableViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				14FA06361AABCDE90070821E /* UpcomingAuctionTableViewController.h */,
+				14FA06371AABCDE90070821E /* UpcomingAuctionTableViewController.m */,
+				14754AE71A2FF1890002CAB2 /* OngoingAuctionTableViewController.h */,
+				14754AE81A2FF1890002CAB2 /* OngoingAuctionTableViewController.m */,
+				14754AE41A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.h */,
+				14754AE51A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.m */,
+			);
+			name = AuctionTableViewControllers;
+			sourceTree = "<group>";
+		};
+		14FA06351AABCD040070821E /* AuctionItemViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				14FA06391AABD1900070821E /* UpcomingAuctionItemViewController.h */,
+				14FA063A1AABD1900070821E /* UpcomingAuctionItemViewController.m */,
+				14754ADB1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.h */,
+				14754ADC1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m */,
+				14754ADE1A2EA5020002CAB2 /* CompleteAuctionItemViewController.h */,
+				14754ADF1A2EA5020002CAB2 /* CompleteAuctionItemViewController.m */,
+			);
+			name = AuctionItemViewControllers;
+			sourceTree = "<group>";
+		};
+		14FA063C1AABD58A0070821E /* AuthenticationViews */ = {
+			isa = PBXGroup;
+			children = (
+				14E4D06F1A1EB46D005EA29D /* LogInViewController.h */,
+				14E4D0701A1EB46D005EA29D /* LogInViewController.m */,
+				14754AB91A2E58060002CAB2 /* RegisterViewController.h */,
+				14754ABA1A2E58060002CAB2 /* RegisterViewController.m */,
+			);
+			name = AuthenticationViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,17 +378,22 @@
 				14754AE21A2EAD480002CAB2 /* CompleteAuction.m in Sources */,
 				14754ACD1A2E6D000002CAB2 /* Item.m in Sources */,
 				14754ABB1A2E58060002CAB2 /* RegisterViewController.m in Sources */,
-				14E4D0711A1EB46D005EA29D /* ViewController.m in Sources */,
+				14E4D0711A1EB46D005EA29D /* LogInViewController.m in Sources */,
 				14E4D06E1A1EB46D005EA29D /* AppDelegate.m in Sources */,
+				14FA06381AABCDE90070821E /* UpcomingAuctionTableViewController.m in Sources */,
 				14754AE91A2FF1890002CAB2 /* OngoingAuctionTableViewController.m in Sources */,
 				14E4D08F1A1FEE61005EA29D /* ConstraintManager.m in Sources */,
+				14FA062F1AABC6460070821E /* UpcomingAuction.m in Sources */,
+				14FA063F1AAC661C0070821E /* Bid.m in Sources */,
 				14754AEC1A30030C0002CAB2 /* AuctionsTableViewController.m in Sources */,
-				14754AD41A2EA3FD0002CAB2 /* CompleteAuctionViewController.m in Sources */,
+				14FA06321AABC7830070821E /* Auction.m in Sources */,
 				14E4D06B1A1EB46D005EA29D /* main.m in Sources */,
+				149A80841AAC716E00319A19 /* CompleteAuctionTableViewController.m in Sources */,
 				14754ADD1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m in Sources */,
 				14E290F41A71983200924EEE /* NavigationController.m in Sources */,
 				14754AD71A2EA4350002CAB2 /* NewAuctionViewController.m in Sources */,
 				14754AEE1A300A370002CAB2 /* OngoingAuction.m in Sources */,
+				14FA063B1AABD1900070821E /* UpcomingAuctionItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

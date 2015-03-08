@@ -1,22 +1,22 @@
 //
-//  OngoingAuctionTableViewController.m
+//  UpcomingAuctionTableViewController.m
 //  BidrBird
 //
-//  Created by Zachary Glazer on 12/3/14.
-//  Copyright (c) 2014 Zachary Glazer. All rights reserved.
+//  Created by Zachary Glazer on 3/7/15.
+//  Copyright (c) 2015 Zachary Glazer. All rights reserved.
 //
 
-#import "OngoingAuctionTableViewController.h"
+#import "UpcomingAuctionTableViewController.h"
 
-@interface OngoingAuctionTableViewController ()
+@interface UpcomingAuctionTableViewController ()
 
 @end
 
-@implementation OngoingAuctionTableViewController
+@implementation UpcomingAuctionTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -29,11 +29,11 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithAuction:(OngoingAuction *)auction navigationController:(NavigationController *)controller {
+-(id) initWithAuction:(UpcomingAuction *)auction navigationController:(NavigationController *)controller {
     self->auction = auction;
     
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/get-auction-bidables/", [self->auction getAuctionID]];
-
+    
     [HTTPRequest GET:@"" toExtension:exten withAuthToken:controller.auth_token delegate:self];
     
     return self;
@@ -43,64 +43,51 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-   if (section == 0) {
-      return self->auction->bidOnItems.count;
-   } else {
-      return self->auction->otherItems.count;
-   }
+    return self->auction->items.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-   if(section == 0) {
-      return @"My Bids";
-   } else {
-      return @"Other Items";
-   }
+    return @"Items";
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   static NSString *simpleTableIdentifier = @"Cell";
-   
-   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-   Item *item;
-   
-   if (cell == nil) {
-      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
-   }
-   
-   if (indexPath.section == 0) {
-      item = [self->auction->bidOnItems objectAtIndex:indexPath.row];
-   } else {
-      item = [self->auction->otherItems objectAtIndex:indexPath.row];
-   }
-   
-   cell.textLabel.text = item.getName;
-   cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%.2f", @"$ ", item.getHightestBid];
-   cell.imageView.image = item.getPicture;
-   
-   return cell;
+    static NSString *simpleTableIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    Item *item;
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
+    }
+    
+    if (indexPath.section == 0) {
+        item = [self->auction->items objectAtIndex:indexPath.row];
+    }
+    
+    cell.textLabel.text = item.getName;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%.2f", @"$ ", item.getHightestBid];
+    cell.imageView.image = item.getPicture;
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-   Item *item;
-   if (indexPath.section == 0) {
-      item = [self->auction->bidOnItems objectAtIndex:indexPath.row];
-   } else {
-      item = [self->auction->otherItems objectAtIndex:indexPath.row];
-   }
-   
-   NSString * storyboardName = @"Main";
-   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
-   OngoingAuctionItemViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionItemViewController"];
-   vc = [vc initWithItem:item];
-   [self.navigationController pushViewController:vc animated:YES];
+    Item *item;
+    if (indexPath.section == 0) {
+        item = [self->auction->items objectAtIndex:indexPath.row];
+    }
+    
+    NSString * storyboardName = @"Main";
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+    UpcomingAuctionItemViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionItemViewController"];
+    vc = [vc initWithItem:item];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // This method is used to receive the data which we get using post method.
@@ -110,7 +97,7 @@
     NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
-
+    
     if([jsonDict objectForKey:@"bidables"] != nil) {
         NSArray *bidables = [jsonDict objectForKey:@"bidables"];
         
@@ -147,37 +134,12 @@
             if ([jsonDict objectForKey:@"min_price"] != nil) {
                 minPrice = [(NSNumber*)[jsonDict objectForKey:@"min_price"] doubleValue];
             }
-            Item *ongoingItem = [[Item alloc] initWithName:name description:description highestBid:highestBid condition:nil picture:picture itemID:itemID minimumBid:minPrice];
+            Item *upcomingItem = [[Item alloc] initWithName:name description:description highestBid:highestBid condition:nil picture:picture itemID:itemID minimumBid:minPrice];
             
-            
-            NSArray *bids;
-            if ([jsonDict objectForKey:@"bids"] != nil) {
-                bids = [jsonDict objectForKey:@"bids"];
-            }
-            
-            BOOL bidOnItem = false;
-            for (int count = 0; count < bids.count; count++) {
-                NSDictionary *bidDict = bids[count];
-                
-                if ([bidDict objectForKey:@"user"] != nil) {
-                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [((NavigationController*)self.navigationController).user_id intValue]) {
-                        bidOnItem = true;
-                        break;
-                    }                
-                }
-            }
-            if (bidOnItem) {
-                if (self->auction->bidOnItems == nil) {
-                    self->auction->bidOnItems = [NSMutableArray arrayWithObject:ongoingItem];
-                } else {
-                    [self->auction->bidOnItems addObject:ongoingItem];
-                }
+            if (self->auction->items == nil) {
+                self->auction->items = [NSMutableArray arrayWithObject:upcomingItem];
             } else {
-                if (self->auction->otherItems == nil) {
-                    self->auction->otherItems = [NSMutableArray arrayWithObject:ongoingItem];
-                } else {
-                    [self->auction->otherItems addObject:ongoingItem];
-                }
+                [self->auction->items addObject:upcomingItem];
             }
         }
     }
@@ -198,7 +160,6 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //dont do anything
 }
-
 
 /*
 // Override to support conditional editing of the table view.

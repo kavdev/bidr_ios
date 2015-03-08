@@ -13,6 +13,8 @@
 + (void) POST:(NSString *)post toExtension:(NSString *)extension delegate:(id)delegate {
     //NSString *url = [NSString stringWithFormat:@"http://bidr-staging.herokuapp.com/api/%@", extension];
     NSString *url = [NSString stringWithFormat:@"http://192.168.2.4:8020/api/%@", extension];
+    //NSString *url = [NSString stringWithFormat:@"http://127.0.0.1:8020/api/%@", extension];
+    
 
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:FALSE];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[post length]];
@@ -36,6 +38,7 @@
 + (void) POST:(NSString *)post toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate {
     //NSString *url = [NSString stringWithFormat:@"http://bidr-staging.herokuapp.com/api/%@", extension];
     NSString *url = [NSString stringWithFormat:@"http://192.168.2.4:8020/api/%@", extension];
+    //NSString *url = [NSString stringWithFormat:@"http://127.0.0.1:8020/api/%@", extension];
     
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[post length]];
@@ -62,6 +65,7 @@
 + (void) PUT:(NSString *)put toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate {
     //NSString *url = [NSString stringWithFormat:@"http://bidr-staging.herokuapp.com/api/%@", extension];
     NSString *url = [NSString stringWithFormat:@"http://192.168.2.4:8020/api/%@", extension];
+    //NSString *url = [NSString stringWithFormat:@"http://127.0.0.1:8020/api/%@", extension];
     
     NSData *postData = [put dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[put length]];
@@ -88,6 +92,7 @@
 + (void) GET:(NSString *)get toExtension:(NSString *)extension withAuthToken:(NSString*)token delegate:(id)delegate {
     //NSString *url = [NSString stringWithFormat:@"http://bidr-staging.herokuapp.com/api/%@", extension];
     NSString *url = [NSString stringWithFormat:@"http://192.168.2.4:8020/api/%@", extension];
+    //NSString *url = [NSString stringWithFormat:@"http://127.0.0.1:8020/api/%@", extension];
     
     NSData *postData = [get dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[get length]];

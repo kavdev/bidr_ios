@@ -10,22 +10,18 @@
 #define BidrBird_OngoingAuction_h
 
 #import <UIKit/UIKit.h>
+#import "Auction.h"
 
-@interface OngoingAuction : NSObject {
-   NSArray *bidOnItems;
-   NSArray *otherItems;
-   NSString *name;
-   UIImage *picture;
-    NSString *auctionID;
+@interface OngoingAuction : Auction {
+    @public
+    NSMutableArray *bidOnItems;
+    NSMutableArray *otherItems;
 }
 
--(id) initWithBidOnItems:(NSArray*)items otherItems:(NSArray*)otherItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
--(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+-(id) initWithBidOnItems:(NSMutableArray*)items otherItems:(NSMutableArray*)otherItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
 
-- (NSArray*) getBidOnItems;
-- (NSArray*) getOtherItems;
-- (NSString*) getName;
-- (UIImage*) getPicture;
+- (NSMutableArray*) getBidOnItems;
+- (NSMutableArray*) getOtherItems;
 
 @end
 

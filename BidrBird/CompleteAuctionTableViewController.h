@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Item.h"
 #import "CompleteAuctionItemViewController.h"
+#import "Bid.h"
+#import "CompleteAuction.h"
+#import "NavigationController.h"
 
-@interface CompleteAuctionTableViewController : UITableViewController {
-   NSArray *boughtItems;
+@interface CompleteAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    CompleteAuction *auction;
 }
 
--(id) initWithBoughtItems:(NSArray*)items;
+-(id) initWithAuction:(CompleteAuction *)auction navigationController:(NavigationController *)controller;
 
 @end

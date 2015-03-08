@@ -29,51 +29,186 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithBoughtItems:(NSArray*)items {
-   self->boughtItems = items;
-   
-   return self;
+-(id) initWithAuction:(CompleteAuction *)auction navigationController:(NavigationController *)controller {
+    self->auction = auction;
+    
+    NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/get-auction-bidables/", [self->auction getAuctionID]];
+    
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:controller.auth_token delegate:self];
+    
+    return self;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [self->boughtItems count];
+    if (section == 0) {
+        return [self->auction->wonItems count];
+    } else {
+        return [self->auction->lostItems count];
+    }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return @"Won";
+    } else {
+        return @"Lost";
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   static NSString *simpleTableIdentifier = @"Cell";
+    static NSString *simpleTableIdentifier = @"Cell";
    
-   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    Item *item;
    
-   if (cell == nil) {
-      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
-   }
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
+    }
+    
+    
+    if (indexPath.section == 0) {
+        item = [self->auction->wonItems objectAtIndex:indexPath.row];
+    } else {
+        item = [self->auction->lostItems objectAtIndex:indexPath.row];
+    }
    
-   cell.textLabel.text = ((Item *)[self->boughtItems objectAtIndex:indexPath.row]).getName;
-   cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%.2f", @"$ ", ((Item *)[self->boughtItems objectAtIndex:indexPath.row]).getHightestBid];
-   cell.imageView.image = ((Item *)[self->boughtItems objectAtIndex:indexPath.row]).getPicture;
+    cell.textLabel.text = item.getName;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%.2f", @"$ ", item.getHightestBid];
+    cell.imageView.image = item.getPicture;
    
    
    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-   Item *item = [self->boughtItems objectAtIndex:indexPath.row];
-   
-   NSString * storyboardName = @"Main";
-   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
-   UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"CompleteAuctionItemViewController"];
-   vc = [(CompleteAuctionItemViewController*)vc initWithItem:item];
-   [self.navigationController pushViewController:vc animated:YES];
+    Item *item;
+    if (indexPath.section == 0) {
+        item = [self->auction->wonItems objectAtIndex:indexPath.row];
+    } else {
+        item = [self->auction->lostItems objectAtIndex:indexPath.row];
+    }
+    
+    NSString * storyboardName = @"Main";
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+    CompleteAuctionItemViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"CompleteAuctionItemViewController"];
+    vc = [vc initWithItem:item];
+    [self.navigationController pushViewController:vc animated:YES];
 
+}
+
+// This method is used to receive the data which we get using post method.
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
+    
+    NSLog(@"Received Data!");
+    NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSLog(@"jsonString: %@", jsonString);
+    
+    if([jsonDict objectForKey:@"bidables"] != nil) {
+        NSArray *bidables = [jsonDict objectForKey:@"bidables"];
+        
+        for (int count = 0; count < bidables.count; count++) {
+            jsonDict = bidables[count];
+            NSString *name;
+            NSString *imageURL;
+            NSString *description;
+            UIImage *picture;
+            int itemID = -1;
+            double minPrice = 0;
+            Bid *highestBid;
+            
+            if ([jsonDict objectForKey:@"name"] != nil) {
+                name = [jsonDict objectForKey:@"name"];
+            }
+            if ([jsonDict objectForKey:@"highest_bid"] != nil && ![[jsonDict objectForKey:@"highest_bid"] isKindOfClass:[NSNull class]]) {
+                NSDictionary *highestBidDict = [jsonDict objectForKey:@"highest_bid"];
+                double amount;
+                int userID;
+                if ([highestBidDict objectForKey:@"amount"] != nil) {
+                    amount = [(NSString *)[highestBidDict objectForKey:@"amount"] doubleValue];
+                }
+                if ([highestBidDict objectForKey:@"user"] != nil) {
+                    userID = [(NSNumber *)[highestBidDict objectForKey:@"user"] intValue];
+                }
+                highestBid = [[Bid alloc] initWithAmount:amount userID:userID];
+            }
+            if ([jsonDict objectForKey:@"image_url"]) {
+                imageURL = [jsonDict objectForKey:@"image_url"];
+                //do this
+                picture = nil;
+            }
+            if ([jsonDict objectForKey:@"description"] != nil) {
+                description = [jsonDict objectForKey:@"description"];
+            }
+            if ([jsonDict objectForKey:@"id"] != nil) {
+                itemID = [[NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]] intValue];
+            }
+            if ([jsonDict objectForKey:@"min_price"] != nil) {
+                minPrice = [(NSNumber*)[jsonDict objectForKey:@"min_price"] doubleValue];
+            }
+            Item *completedItem = [[Item alloc] initWithName:name description:description highestBid:highestBid->amount condition:nil picture:picture itemID:itemID minimumBid:minPrice];
+            
+            
+            NSArray *bids;
+            if ([jsonDict objectForKey:@"bids"] != nil) {
+                bids = [jsonDict objectForKey:@"bids"];
+            }
+            
+            BOOL bidOnItem = false;
+            BOOL wonItem = false;
+            for (int count = 0; count < bids.count; count++) {
+                NSDictionary *bidDict = bids[count];
+                
+                if ([bidDict objectForKey:@"user"] != nil) {
+                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [((NavigationController*)self.navigationController).user_id intValue]) {
+                        bidOnItem = true;
+                        break;
+                    }                
+                }
+            }
+            if (highestBid != nil && highestBid->userID == [((NavigationController*)self.navigationController).user_id intValue]) {
+                wonItem = true;
+            }
+            
+            if (bidOnItem && wonItem) {
+                if (self->auction->wonItems == nil) {
+                    self->auction->wonItems = [NSMutableArray arrayWithObject:completedItem];
+                } else {
+                    [self->auction->wonItems addObject:completedItem];
+                }
+            } else if (bidOnItem) {
+                if (self->auction->lostItems == nil) {
+                    self->auction->lostItems = [NSMutableArray arrayWithObject:completedItem];
+                } else {
+                    [self->auction->lostItems addObject:completedItem];
+                }
+            }
+        }
+    }
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"Finished Loading");
+    [self.tableView reloadData];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    //dont do anything
 }
 
 /*

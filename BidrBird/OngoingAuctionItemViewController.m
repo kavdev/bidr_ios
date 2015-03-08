@@ -17,56 +17,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-//   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//   [request setURL:[NSURL URLWithString:@"https://bidr-2.herokuapp.com/api/bids/?ordering=-amount"]];
-//   [request setHTTPMethod:@"GET"];
-//
-//   NSURLResponse *requestResponse;
-//   NSData *requestHandler = [NSURLConnection sendSynchronousRequest:request returningResponse:&requestResponse error:nil];
-//   
-//   NSString *requestReply = [[NSString alloc] initWithBytes:[requestHandler bytes] length:[requestHandler length] encoding:NSASCIIStringEncoding];
-//   NSLog(@"requestReply: %@", requestReply);
-//   NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:requestHandler options:kNilOptions error:nil];
-//   //NSLog(@"jsonString: %@", jsonString);
-//   NSArray *bids = [jsonDict objectForKey:@"results"];
-//   if (bids.count > 0) {
-//      NSDictionary* dic = [bids objectAtIndex:0];
-//      str = [dic objectForKey:@"amount"];
-//   }
+    self.imageView.image = self->item.getPicture;
+    self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];
+    self.conditionLabel.text = [NSString stringWithFormat:@"Condition: %@", self->item.getCondition];
+    self.descriptionLabel.text = self->item.getDescription;
    
-   self.imageView.image = self->item.getPicture;
-   [self loadHighestBid];
-   //self.currentBidLabel.text = [NSString stringWithFormat:@"%@%@", @"Current Bid: $ ", str];
-   self.conditionLabel.text = [NSString stringWithFormat:@"%@%@", @"Condition: ", self->item.getCondition];
-   self.descriptionLabel.text = self->item.getDescription;
-   
-   UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];
-   navCon.navigationItem.title = self->item.getName;
+    UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];
+    navCon.navigationItem.title = self->item.getName;
    
     // Do any additional setup after loading the view.
-}
-
-- (void) loadHighestBid {
-   NSString *str = @"problem";
-   
-   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-   [request setURL:[NSURL URLWithString:@"https://bidr-2.herokuapp.com/api/bids/?ordering=-amount"]];
-   [request setHTTPMethod:@"GET"];
-   
-   NSURLResponse *requestResponse;
-   NSData *requestHandler = [NSURLConnection sendSynchronousRequest:request returningResponse:&requestResponse error:nil];
-   
-   NSString *requestReply = [[NSString alloc] initWithBytes:[requestHandler bytes] length:[requestHandler length] encoding:NSASCIIStringEncoding];
-   NSLog(@"requestReply: %@", requestReply);
-   NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:requestHandler options:kNilOptions error:nil];
-   //NSLog(@"jsonString: %@", jsonString);
-   NSArray *bids = [jsonDict objectForKey:@"results"];
-   if (bids.count > 0) {
-      NSDictionary* dic = [bids objectAtIndex:0];
-      str = [dic objectForKey:@"amount"];
-   }
-   
-   self.currentBidLabel.text = [NSString stringWithFormat:@"%@%@", @"Current Bid: $ ", str];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,95 +39,21 @@
 }
 
 - (IBAction)placeBid:(id)sender {
-   float bidAmount = [self.makeBidTextField.text floatValue];
-   
-   
-   
-   
-//   NSString *queryString = [NSString stringWithFormat:@"http://www.posttestserver.com/post.php"];
-//   NSMutableURLRequest *theRequest=[NSMutableURLRequest
-//                                    requestWithURL:[NSURL URLWithString:
-//                                                    queryString]
-//                                    cachePolicy:NSURLRequestUseProtocolCachePolicy
-//                                    timeoutInterval:60.0];
-//   [theRequest setHTTPMethod:@"POST"];
-//   //NSMutableData *body = [NSMutableData data];
-//   //[body appendData:[[NSString stringWithFormat:@"Contestant1 %@ ",contestant1] dataUsingEncoding:NSUTF8StringEncoding]];
-//   //[body appendData:[[NSString stringWithFormat:@"Contestant2 %@ ",contestant2] dataUsingEncoding:NSUTF8StringEncoding]];
-//   //[theRequest setHTTPBody:body];
-//   
-//   NSDictionary *postDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%.2f",bidAmount], @"amount", @"https://bidr-2herokuapp.com/api/bidders/6/", @"user", nil];
-//   
-//   NSError *error=nil;
-//   
-//   NSData* jsonData = [NSJSONSerialization dataWithJSONObject:postDict
-//                                                      options:NSJSONWritingPrettyPrinted error:&error];
-//   [theRequest setHTTPBody:jsonData];
-//
-//   
-//   
-//   NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-   
-   
-   
-   
-   
-   
-   
-   
-//   NSString *post = [NSString stringWithFormat:@"{'amount':'%.2f','user':'%@'}",bidAmount, @"https://bidr-2herokuapp.com/api/bidders/6/"];
-//   
-//   NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:true];
-//   
-//   NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
-//   
-//   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//   
-//   //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.posttestserver.com/post.php"]]];
-//   [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://bidr-2.herokuapp.com/api/bids/"]]];
-//   
-//   [request setHTTPMethod:@"POST"];
-//   
-//   [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//   
-//   [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//   //[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//   
-//   [request setHTTPBody:postData];
-//   
-//   NSURLConnection *con = [[NSURLConnection alloc]initWithRequest:request delegate:self];
-   
-   
-   
-   
-   
-   
-   NSString *post = [NSString stringWithFormat:@"amount=%.2f&user=%@", bidAmount, @"https://bidr-2herokuapp.com/api/bidders/6/"];
-   NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-   NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[post length]];
-   
-   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://bidr-2.herokuapp.com/api/bids/"]];
-   
-   [request setHTTPMethod:@"POST"];
-   [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-   [request setHTTPBody:postData];
-   
-   NSURLConnection *con = [NSURLConnection connectionWithRequest:request delegate:self];
-   
-   if(con) {
-      NSLog(@"Connection Successful");
-   } else {
-      NSLog(@"Connection could not be made");
-   }
+    float bidAmount = [self.makeBidTextField.text floatValue];
+    NSString *post = [NSString stringWithFormat:@"amount=%.2lf&user=%@&itemID=%d", bidAmount, ((NavigationController*)self.navigationController).user_id, self->item->itemID];
+    
+    NSString *exten = [NSString stringWithFormat:@"bids/create-bid/"];
+    
+    [HTTPRequest POST:post toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
 }
 
 - (IBAction)hideKeypad:(id)sender {
-   [self.makeBidTextField resignFirstResponder];
-   self.hidKeypadButton.hidden = true;
+    [self.makeBidTextField resignFirstResponder];
+    self.hidKeypadButton.hidden = true;
 }
 
 - (IBAction)startedEditing:(id)sender {
-   self.hidKeypadButton.hidden = false;
+    self.hidKeypadButton.hidden = false;
 }
 
 // This method is used to receive the data which we get using post method.
@@ -177,17 +62,22 @@
    NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
    NSLog(@"jsonString: %@", jsonString);
-   
-   if ([[jsonDict objectForKey:@"amount"] isKindOfClass:[NSString class]]) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bid complete" message:@"You now have the highest bid!" delegate:self cancelButtonTitle:@"WOOO!!" otherButtonTitles: nil];
-      [alert show];
-   } else if ([[((NSArray*)[jsonDict objectForKey:@"amount"]) objectAtIndex:0]  isEqual: @"Your bid must exceed the current bid amount."]) {
-      NSLog(@"YES!!!");
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bid too low" message:@"Your bid was not higher than the current max bid." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-         [alert show];
-   }
-   [self loadHighestBid];
-   //NSLog(@"jsonString: %@", jsonString);
+    
+    if ([jsonDict objectForKey:@"bid_too_low"] != nil) {
+        double highest = [(NSNumber*)[jsonDict objectForKey:@"bid_too_low"] doubleValue];
+        NSString *message = [NSString stringWithFormat:@"Your bid must be greater than the current highest bid of $%.2lf.", highest];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bid too low" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        self->item->highestBid = highest;
+        self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];
+        [alert show];
+    } else if ([jsonDict objectForKey:@"amount"] != nil) {
+        double highest = [(NSNumber*)[jsonDict objectForKey:@"amount"] doubleValue];
+        NSString *message = [NSString stringWithFormat:@"You now have the highest bid on this item at $%.2lf!", highest];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New highest bid!" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        self->item->highestBid = highest;
+        self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];
+        [alert show];
+    }
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

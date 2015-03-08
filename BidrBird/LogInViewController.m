@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Zachary Glazer. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LogInViewController.h"
 
-@interface ViewController ()
+@interface LogInViewController ()
 
 @end
 
-@implementation ViewController
+@implementation LogInViewController
 
 - (void)viewDidLoad {
    [super viewDidLoad];

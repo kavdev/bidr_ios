@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "OngoingAuctionItemViewController.h"
+#import "OngoingAuction.h"
 #import "Item.h"
+#import "HTTPRequest.h"
+#import "NavigationController.h"
 
-@interface OngoingAuctionTableViewController : UITableViewController {
-   NSArray *bidOnItemList;
-   NSArray *otherItemList;
+@interface OngoingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    OngoingAuction *auction;
 }
 
--(id) initWithBidOnItems:(NSArray*)bidOnItems otherItems:(NSArray*)otherItems;
+-(id) initWithAuction:(OngoingAuction *)auction navigationController:(NavigationController *)controller;
 
 @end

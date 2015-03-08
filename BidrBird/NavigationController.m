@@ -54,26 +54,6 @@
     if ([jsonDict objectForKey:@"email"]) {
         self.user_email = [jsonDict objectForKey:@"email"];
     }
-    
-//    if ([jsonDict objectForKey:@"auth_token"] != nil) {
-//        token = [jsonDict objectForKey:@"auth_token"];
-//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
-//        ((NavigationController *) vc).auth_token = token;
-//        ((NavigationController *) vc).user_email = self.emailTextField.text;
-//        [HTTPRequest GET:@"" toExtension:@"auth/me/" withAuthToken:token delegate:vc];
-//        vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-//        [self presentViewController:vc animated:YES completion:NULL];
-//        //[self presentViewController:[[NavigationController alloc] init] animated:TRUE completion:nil];
-//        NSLog(@"auth_token: %@", token);
-//    } else if([jsonDict objectForKey:@"non_field_errors"] != nil) {
-//        NSString *errorString = [((NSArray*)[jsonDict objectForKey:@"non_field_errors"]) objectAtIndex:0];
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email or password" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Forgot password", nil];
-//        [alert show];
-//    } else {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was a server error. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [alert show];
-//    }
 }
 
 // This method receives the error report in case of connection is not made to server.
@@ -85,7 +65,7 @@
 // This method is used to process the data after connection has made successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
-    NSString *extension = [NSString stringWithFormat:@"bidruser/%@/get-auctions-participating-in/", self.user_id];
+    NSString *extension = [NSString stringWithFormat:@"users/%@/get-auctions-participating-in/", self.user_id];
     //NSString *get = [NSString stringWithFormat:@"email=%@", ((NavigationController *)self.parentViewController).user_email];
     
     [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.auth_token delegate:[self topViewController]];

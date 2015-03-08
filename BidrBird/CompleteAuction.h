@@ -10,20 +10,18 @@
 #define BidrBird_CompleteAuction_h
 
 #import <UIKit/UIKit.h>
+#import "Auction.h"
 
-@interface CompleteAuction : NSObject {
-   NSArray *boughtItems;
-   NSString *name;
-   UIImage *picture;
-    NSString *auctionID;
+@interface CompleteAuction : Auction {
+    @public
+    NSMutableArray *wonItems;
+    NSMutableArray *lostItems;
 }
 
--(id) initWithBoughtItems:(NSArray*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
--(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+- (id) initWithWonItems:(NSMutableArray*)wonItems lostItems:(NSMutableArray *)lostItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
 
-- (NSArray*) getBoughtItems;
-- (NSString*) getName;
-- (UIImage*) getPicture;
+- (NSMutableArray *) getWonItems;
+- (NSMutableArray *) getLostItems;
 
 @end
 

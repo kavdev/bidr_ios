@@ -10,13 +10,14 @@
 
 @implementation Item
 
-- (id) initWithName:(NSString*)name description:(NSString*)description highestBid:(double)highestBid condition:(NSString*)condition picture:(UIImage *)picture itemID:(int)itemID {
-   self->name = name;
-   self->description = description;
-   self->highestBid = highestBid;
-   self->condition = condition;
-   self->picture = picture;
-   self->itemID = itemID;
+- (id) initWithName:(NSString*)name description:(NSString*)description highestBid:(double)highestBid condition:(NSString*)condition picture:(UIImage *)picture itemID:(int)itemID minimumBid:(double)minBid {
+    self->name = name;
+    self->description = description;
+    self->highestBid = highestBid;
+    self->condition = condition;
+    self->picture = picture;
+    self->itemID = itemID;
+    self->minBid = minBid;
    
    return self;
 }
