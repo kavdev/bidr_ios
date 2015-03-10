@@ -34,13 +34,34 @@
 }
 */
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    responseData = [[NSMutableData alloc] init];
+}
+
 // This method is used to receive the data which we get using post method.
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {    
+    NSLog(@"Received Data!");
+    [responseData appendData:data];
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+    
+    if (responseData != nil) {
+        [responseData setData:nil];
+    }
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSString *token;
     
-    NSLog(@"Received Data!");
-    NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSLog(@"Finished Loading");
+    
+    NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     if ([jsonDict objectForKey:@"name"]) {
         self.user_name = [jsonDict objectForKey:@"name"];
@@ -54,18 +75,10 @@
     if ([jsonDict objectForKey:@"email"]) {
         self.user_email = [jsonDict objectForKey:@"email"];
     }
-}
-
-// This method receives the error report in case of connection is not made to server.
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"FAIL");
-    NSLog([error description]);
-}
-
-// This method is used to process the data after connection has made successfully.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Finished Loading");
-    NSString *extension = [NSString stringWithFormat:@"users/%@/get-auctions-participating-in/", self.user_id];
+    
+    [responseData setData:nil];
+    
+    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.user_id];
     
     [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.auth_token delegate:[self topViewController]];
 }

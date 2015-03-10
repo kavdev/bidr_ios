@@ -14,6 +14,7 @@
 
 @interface UpcomingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     UpcomingAuction *auction;
+    NSMutableData *responseData;
 }
 
 -(id) initWithAuction:(UpcomingAuction *)auction navigationController:(NavigationController *)controller;

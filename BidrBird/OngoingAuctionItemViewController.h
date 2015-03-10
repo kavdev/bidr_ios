@@ -12,14 +12,14 @@
 #include "HTTPRequest.h"
 
 @interface OngoingAuctionItemViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
-   Item *item;
+    Item *item;
+    NSMutableData *responseData;
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UILabel *currentBidLabel;
 @property (strong, nonatomic) IBOutlet UITextField *makeBidTextField;
 @property (strong, nonatomic) IBOutlet UIButton *placeBidButton;
-@property (strong, nonatomic) IBOutlet UILabel *conditionLabel;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (strong, nonatomic) IBOutlet UIButton *hidKeypadButton;
 

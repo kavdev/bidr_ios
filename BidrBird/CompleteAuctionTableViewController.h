@@ -15,6 +15,7 @@
 
 @interface CompleteAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     CompleteAuction *auction;
+    NSMutableData *responseData;
 }
 
 -(id) initWithAuction:(CompleteAuction *)auction navigationController:(NavigationController *)controller;

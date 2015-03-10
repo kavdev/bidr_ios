@@ -9,14 +9,6 @@
 /* Begin PBXBuildFile section */
 		14318C5A1A9180D900CE1797 /* HTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 14318C591A9180D900CE1797 /* HTTPRequest.m */; };
 		14754ABB1A2E58060002CAB2 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ABA1A2E58060002CAB2 /* RegisterViewController.m */; };
-		14754ABD1A2E60080002CAB2 /* BlueHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754ABC1A2E60080002CAB2 /* BlueHouse.jpg */; };
-		14754ABF1A2E64E40002CAB2 /* RedHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754ABE1A2E64E40002CAB2 /* RedHouse.jpg */; };
-		14754AC11A2E6C110002CAB2 /* RightShoe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC01A2E6C110002CAB2 /* RightShoe.jpg */; };
-		14754AC31A2E6C1B0002CAB2 /* LeftShoe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC21A2E6C1B0002CAB2 /* LeftShoe.jpg */; };
-		14754AC51A2E6C230002CAB2 /* Shampoo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC41A2E6C230002CAB2 /* Shampoo.jpg */; };
-		14754AC71A2E6C2D0002CAB2 /* Toy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC61A2E6C2D0002CAB2 /* Toy.jpg */; };
-		14754AC91A2E6C390002CAB2 /* iPhone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754AC81A2E6C390002CAB2 /* iPhone.jpg */; };
-		14754ACB1A2E6C440002CAB2 /* Chair.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 14754ACA1A2E6C440002CAB2 /* Chair.jpg */; };
 		14754ACD1A2E6D000002CAB2 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ACC1A2E6D000002CAB2 /* Item.m */; };
 		14754AD71A2EA4350002CAB2 /* NewAuctionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AD61A2EA4350002CAB2 /* NewAuctionViewController.m */; };
 		14754ADD1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754ADC1A2EA4D80002CAB2 /* OngoingAuctionItemViewController.m */; };
@@ -57,14 +49,6 @@
 		14318C591A9180D900CE1797 /* HTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPRequest.m; sourceTree = "<group>"; };
 		14754AB91A2E58060002CAB2 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		14754ABA1A2E58060002CAB2 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
-		14754ABC1A2E60080002CAB2 /* BlueHouse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = BlueHouse.jpg; sourceTree = "<group>"; };
-		14754ABE1A2E64E40002CAB2 /* RedHouse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RedHouse.jpg; sourceTree = "<group>"; };
-		14754AC01A2E6C110002CAB2 /* RightShoe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RightShoe.jpg; sourceTree = "<group>"; };
-		14754AC21A2E6C1B0002CAB2 /* LeftShoe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LeftShoe.jpg; sourceTree = "<group>"; };
-		14754AC41A2E6C230002CAB2 /* Shampoo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Shampoo.jpg; sourceTree = "<group>"; };
-		14754AC61A2E6C2D0002CAB2 /* Toy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Toy.jpg; sourceTree = "<group>"; };
-		14754AC81A2E6C390002CAB2 /* iPhone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iPhone.jpg; sourceTree = "<group>"; };
-		14754ACA1A2E6C440002CAB2 /* Chair.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Chair.jpg; sourceTree = "<group>"; };
 		14754ACC1A2E6D000002CAB2 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		14754ACE1A2E6D0E0002CAB2 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		14754AD51A2EA4350002CAB2 /* NewAuctionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAuctionViewController.h; sourceTree = "<group>"; };
@@ -182,14 +166,6 @@
 		14E4D0681A1EB46D005EA29D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				14754ACA1A2E6C440002CAB2 /* Chair.jpg */,
-				14754AC81A2E6C390002CAB2 /* iPhone.jpg */,
-				14754AC61A2E6C2D0002CAB2 /* Toy.jpg */,
-				14754AC41A2E6C230002CAB2 /* Shampoo.jpg */,
-				14754AC21A2E6C1B0002CAB2 /* LeftShoe.jpg */,
-				14754AC01A2E6C110002CAB2 /* RightShoe.jpg */,
-				14754ABE1A2E64E40002CAB2 /* RedHouse.jpg */,
-				14754ABC1A2E60080002CAB2 /* BlueHouse.jpg */,
 				14E4D0691A1EB46D005EA29D /* Info.plist */,
 				14E4D06A1A1EB46D005EA29D /* main.m */,
 			);
@@ -345,14 +321,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14754AC91A2E6C390002CAB2 /* iPhone.jpg in Resources */,
-				14754ABD1A2E60080002CAB2 /* BlueHouse.jpg in Resources */,
-				14754AC51A2E6C230002CAB2 /* Shampoo.jpg in Resources */,
-				14754AC31A2E6C1B0002CAB2 /* LeftShoe.jpg in Resources */,
-				14754ACB1A2E6C440002CAB2 /* Chair.jpg in Resources */,
-				14754AC71A2E6C2D0002CAB2 /* Toy.jpg in Resources */,
-				14754AC11A2E6C110002CAB2 /* RightShoe.jpg in Resources */,
-				14754ABF1A2E64E40002CAB2 /* RedHouse.jpg in Resources */,
 				14E4D0741A1EB46D005EA29D /* Main.storyboard in Resources */,
 				14E4D0791A1EB46D005EA29D /* LaunchScreen.xib in Resources */,
 				14E4D0761A1EB46D005EA29D /* Images.xcassets in Resources */,

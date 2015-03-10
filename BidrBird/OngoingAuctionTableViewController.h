@@ -15,6 +15,7 @@
 
 @interface OngoingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     OngoingAuction *auction;
+    NSMutableData *responseData;
 }
 
 -(id) initWithAuction:(OngoingAuction *)auction navigationController:(NavigationController *)controller;

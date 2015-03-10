@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "HTTPRequest.h"
 
-@interface NavigationController : UINavigationController <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
+@interface NavigationController : UINavigationController <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
+    NSMutableData *responseData;
+}
 
 @property (nonatomic) NSString *auth_token;
 @property (nonatomic) NSString *user_email;

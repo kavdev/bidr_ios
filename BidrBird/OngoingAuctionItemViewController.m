@@ -19,7 +19,6 @@
    
     self.imageView.image = self->item.getPicture;
     self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];
-    self.conditionLabel.text = [NSString stringWithFormat:@"Condition: %@", self->item.getCondition];
     self.descriptionLabel.text = self->item.getDescription;
    
     UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];
@@ -42,7 +41,7 @@
     float bidAmount = [self.makeBidTextField.text floatValue];
     NSString *post = [NSString stringWithFormat:@"amount=%.2lf&user=%@&itemID=%d", bidAmount, ((NavigationController*)self.navigationController).user_id, self->item->itemID];
     
-    NSString *exten = [NSString stringWithFormat:@"bids/create-bid/"];
+    NSString *exten = [NSString stringWithFormat:@"bids/create/"];
     
     [HTTPRequest POST:post toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
 }
@@ -56,12 +55,37 @@
     self.hidKeypadButton.hidden = false;
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    responseData = [[NSMutableData alloc] init];
+}
+
 // This method is used to receive the data which we get using post method.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
-   NSLog(@"Received Data!");
-   NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-   NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-   NSLog(@"jsonString: %@", jsonString);
+    NSLog(@"Received Data!");
+    [responseData appendData:data];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+   //dont do anything
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+    
+    if (responseData != nil) {
+        [responseData setData:nil];
+    }
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"Finished Loading");
+    
+    NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
+    NSLog(@"jsonString: %@", jsonString);
     
     if ([jsonDict objectForKey:@"bid_too_low"] != nil) {
         double highest = [(NSNumber*)[jsonDict objectForKey:@"bid_too_low"] doubleValue];
@@ -78,21 +102,8 @@
         self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];
         [alert show];
     }
-}
-
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-   //dont do anything
-}
-
-// This method receives the error report in case of connection is not made to server.
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-   NSLog(@"FAIL");
-   NSLog([error description]);
-}
-
-// This method is used to process the data after connection has made successfully.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-   NSLog(@"Finished Loading");
+    
+    [responseData setData:nil];
 }
 
 /*

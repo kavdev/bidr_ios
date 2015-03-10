@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UILabel *wonForLabel;
-@property (strong, nonatomic) IBOutlet UILabel *conditionLabel;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 - (id) initWithItem:(Item*)item;

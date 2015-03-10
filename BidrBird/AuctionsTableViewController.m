@@ -20,6 +20,8 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    self->loggedOut = false;
+    
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     
@@ -29,7 +31,7 @@
 }
 
 - (void) refresh {
-    NSString *extension = [NSString stringWithFormat:@"users/%@/get-auctions-participating-in/", ((NavigationController*)self.navigationController).user_id];
+    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", ((NavigationController*)self.navigationController).user_id];
     
     [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
 }
@@ -49,6 +51,7 @@
 
 - (IBAction)signOut:(id)sender {
     [HTTPRequest POST:@"" toExtension:@"auth/logout/" withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
+    self->loggedOut = true;
    [self dismissViewControllerAnimated:TRUE completion:nil];
 }
 
@@ -62,9 +65,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == 0) {
-        return self->upcomingAuctions.count;
-    } else if (section == 1) {
         return self->ongoingAuctions.count;
+    } else if (section == 1) {
+        return self->upcomingAuctions.count;
     } else {
         return self->completeAuctions.count;
     }
@@ -73,9 +76,9 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return @"Upcoming Auctions";
-    } else if(section == 1) {
         return @"Current Auctions";
+    } else if(section == 1) {
+        return @"Upcoming Auctions";
     } else {
         return @"Complete Auctions";
     }
@@ -92,9 +95,9 @@
    }
    
     if (indexPath.section == 0) {
-        auction = ((UpcomingAuction *)[self->upcomingAuctions objectAtIndex:indexPath.row]);
-    } else if (indexPath.section == 1) {
         auction = ((OngoingAuction *)[self->ongoingAuctions objectAtIndex:indexPath.row]);
+    } else if (indexPath.section == 1) {
+        auction = ((UpcomingAuction *)[self->upcomingAuctions objectAtIndex:indexPath.row]);
     } else {
         auction = ((CompleteAuction *)[self->completeAuctions objectAtIndex:indexPath.row]);
     }
@@ -111,9 +114,9 @@
    
     
     if (indexPath.section == 0) {
-        auction = [self->upcomingAuctions objectAtIndex:indexPath.row];
-    } else if (indexPath.section == 1) {
         auction = [self->ongoingAuctions objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 1) {
+        auction = [self->upcomingAuctions objectAtIndex:indexPath.row];
     } else {
         auction = [self->completeAuctions objectAtIndex:indexPath.row];
     }
@@ -122,11 +125,11 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
     
     if (indexPath.section == 0) {
-        vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
-        vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction navigationController:((NavigationController*)self.navigationController)];
-    } else if (indexPath.section == 1) {
         vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
         vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction navigationController:((NavigationController*)self.navigationController)];
+    } else if (indexPath.section == 1) {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
+        vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction navigationController:((NavigationController*)self.navigationController)];
     } else {
         vc = [storyboard instantiateViewControllerWithIdentifier:@"CompleteAuctionTableViewController"];
         vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction navigationController:((NavigationController*)self.navigationController)];
@@ -134,11 +137,36 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    responseData = [[NSMutableData alloc] init];
+}
+
 // This method is used to receive the data which we get using post method.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {    
     NSLog(@"Received Data!");
-    NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    [responseData appendData:data];
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+    
+    if (responseData != nil) {
+        [responseData setData:nil];
+    }
+    
+    [self.refreshControl endRefreshing];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"Finished Loading");
+    
+    NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     if ([jsonDict objectForKey:@"participants"] != nil) {
         NSArray *auctionsSignedUpFor = [jsonDict objectForKey:@"participants"];
@@ -178,21 +206,22 @@
                 }
             }
         }
+        
+        if ((self->upcomingAuctions == nil || self->upcomingAuctions.count == 0) &&
+            (self->ongoingAuctions == nil || self->ongoingAuctions.count == 0) &&
+            (self->completeAuctions == nil || self->completeAuctions.count == 0) &&
+            !self->loggedOut) {
+            //programatically "press" the add auction bar button item. Could have simply loaded the 
+            //view from the storyboard but whatever
+            [[UIApplication sharedApplication] sendAction:self.addAuctionViewControllerButton.action
+                                                       to:self.addAuctionViewControllerButton.target
+                                                     from:nil
+                                                 forEvent:nil];
+        }
     }
-}
-
-// This method receives the error report in case of connection is not made to server.
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"FAIL");
-    NSLog([error description]);
-    [self.refreshControl endRefreshing];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-}
-
-// This method is used to process the data after connection has made successfully.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Finished Loading");
+    
+    [responseData setData:nil];
+    
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }

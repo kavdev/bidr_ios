@@ -10,7 +10,9 @@
 #import "HTTPRequest.h"
 #import "NavigationController.h"
 
-@interface RegisterViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate>
+@interface RegisterViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UIScrollViewDelegate> {
+    NSMutableData *responseData;
+}
 
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *emailTextField;

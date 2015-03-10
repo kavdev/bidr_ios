@@ -41,7 +41,7 @@
    //check if auction is real
     int idnum = [idString intValue];
     if (idnum != NAN) {
-        NSString *extenstion = [NSString stringWithFormat:@"auctions/%d/add-participant/", idnum];
+        NSString *extenstion = [NSString stringWithFormat:@"auctions/%d/participants/add/", idnum];
         NSString *put;
         if (password.length > 0) {
             put = [NSString stringWithFormat:@"user_email=%@&optional_password=%@", ((NavigationController *)self.parentViewController).user_email, password];
@@ -53,11 +53,17 @@
     }
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    responseData = [[NSMutableData alloc] init];
+}
+
 // This method is used to receive the data which we get using post method.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
     NSString *token;
     
     NSLog(@"Received Data!");
+    [responseData appendData:data];
+    
     NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
@@ -116,11 +122,19 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"FAIL");
     NSLog([error description]);
+    
+    if (responseData != nil) {
+        [responseData setData:nil];
+    }
 }
 
 // This method is used to process the data after connection has made successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
+    
+    
+    
+    [responseData setData:nil];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

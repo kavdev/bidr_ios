@@ -11,7 +11,9 @@
 #import "NavigationController.h"
 #import "HTTPRequest.h"
 
-@interface LogInViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate>
+@interface LogInViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    NSMutableData *responseData;
+}
 
 //@property (strong, nonatomic) IBOutlet UIButton *loginButton;
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *loginHor;

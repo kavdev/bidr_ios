@@ -19,7 +19,6 @@
    
    self.imageView.image = self->item.getPicture;
    self.wonForLabel.text = [NSString stringWithFormat:@"Won for: $ %.2f", self->item.getHightestBid];
-   self.conditionLabel.text = [NSString stringWithFormat:@"Condition: %@", self->item.getCondition];
    self.descriptionLabel.text = self->item.getDescription;
    
    UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];

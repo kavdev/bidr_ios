@@ -19,7 +19,6 @@
     
     self.imageView.image = self->item.getPicture;
     self.minBidLabel.text = [NSString stringWithFormat:@"Minimum Bid: $ %.2lf", self->item->minBid];
-    self.conditionLabel.text = [NSString stringWithFormat:@"Condition: %@", self->item.getCondition];
     self.descriptionLabel.text = self->item.getDescription;
     
     UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];

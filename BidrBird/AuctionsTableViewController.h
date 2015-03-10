@@ -21,7 +21,11 @@
     NSMutableArray *upcomingAuctions;
     NSMutableArray *ongoingAuctions;
     NSMutableArray *completeAuctions;
+    NSMutableData *responseData;
+    BOOL loggedOut;
 }
+
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *addAuctionViewControllerButton;
 
 -(id) initWithOngoingAuctions:(NSMutableArray*)ongoing completeAuctions:(NSMutableArray*)complete upcomingAuctions:(NSMutableArray*)upcoming;
 

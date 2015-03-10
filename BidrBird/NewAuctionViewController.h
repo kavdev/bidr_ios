@@ -16,7 +16,9 @@
 #import "HTTPRequest.h"
 #import "NavigationController.h"
 
-@interface NewAuctionViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate>
+@interface NewAuctionViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    NSMutableData *responseData;
+}
 
 @property (strong, nonatomic) IBOutlet UITextField *auctionIDTextEditor;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextEditor;
