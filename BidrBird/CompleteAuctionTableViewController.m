@@ -173,8 +173,9 @@
                 }
                 highestBid = [[Bid alloc] initWithAmount:amount userID:userID];
             }
-            if ([jsonDict objectForKey:@"image_url"]) {
-                imageURL = [jsonDict objectForKey:@"image_url"];
+            if ([jsonDict objectForKey:@"image_urls"]) {
+                NSArray *urls = [jsonDict objectForKey:@"image_urls"];
+                imageURL = urls[0];
                 
                 picture = [HTTPRequest getImageFromFileExtension:imageURL];
             }

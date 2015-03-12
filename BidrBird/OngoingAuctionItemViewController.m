@@ -39,7 +39,7 @@
 
 - (IBAction)placeBid:(id)sender {
     float bidAmount = [self.makeBidTextField.text floatValue];
-    NSString *post = [NSString stringWithFormat:@"amount=%.2lf&user=%@&itemID=%d", bidAmount, ((NavigationController*)self.navigationController).user_id, self->item->itemID];
+    NSString *post = [NSString stringWithFormat:@"amount=%.2lf&user=%@&item_id=%d", bidAmount, ((NavigationController*)self.navigationController).user_id, self->item->itemID];
     
     NSString *exten = [NSString stringWithFormat:@"bids/create/"];
     
@@ -87,9 +87,11 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     
-    if ([jsonDict objectForKey:@"bid_too_low"] != nil) {
-        double highest = [(NSNumber*)[jsonDict objectForKey:@"bid_too_low"] doubleValue];
-        NSString *message = [NSString stringWithFormat:@"Your bid must be greater than the current highest bid of $%.2lf.", highest];
+    if ([jsonDict objectForKey:@"current_highest_bid"] != nil) {
+        NSString *moneyString = [jsonDict objectForKey:@"current_highest_bid"];
+        NSString *message = [NSString stringWithFormat:@"Your bid must be greater than the current highest bid of %@.", moneyString];
+        moneyString = [moneyString substringFromIndex:1];
+        double highest = [moneyString doubleValue];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bid too low" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         self->item->highestBid = highest;
         self.currentBidLabel.text = [NSString stringWithFormat:@"Current Bid: $ %.2lf", self->item.getHightestBid];

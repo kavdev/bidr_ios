@@ -13,6 +13,10 @@
 #import "HTTPRequest.h"
 #import "NavigationController.h"
 
+#define NUM_SECTIONS 2
+#define BID_ON_ITEMS_SECTION 0
+#define OTHER_ITEMS_SECTION 1
+
 @interface OngoingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     OngoingAuction *auction;
     NSMutableData *responseData;

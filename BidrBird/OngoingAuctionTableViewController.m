@@ -50,12 +50,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return NUM_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-   if (section == 0) {
+   if (section == BID_ON_ITEMS_SECTION) {
       return self->auction->bidOnItems.count;
    } else {
       return self->auction->otherItems.count;
@@ -64,7 +64,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-   if(section == 0) {
+   if(section == BID_ON_ITEMS_SECTION) {
       return @"My Bids";
    } else {
       return @"Other Items";
@@ -82,7 +82,7 @@
       cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
    }
    
-   if (indexPath.section == 0) {
+   if (indexPath.section == BID_ON_ITEMS_SECTION) {
       item = [self->auction->bidOnItems objectAtIndex:indexPath.row];
    } else {
       item = [self->auction->otherItems objectAtIndex:indexPath.row];
@@ -97,7 +97,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
    Item *item;
-   if (indexPath.section == 0) {
+   if (indexPath.section == BID_ON_ITEMS_SECTION) {
       item = [self->auction->bidOnItems objectAtIndex:indexPath.row];
    } else {
       item = [self->auction->otherItems objectAtIndex:indexPath.row];
@@ -166,8 +166,9 @@
                     highestBid = [(NSString *)[highestBidDict objectForKey:@"amount"] doubleValue];
                 }
             }
-            if ([jsonDict objectForKey:@"image_url"]) {
-                imageURL = [jsonDict objectForKey:@"image_url"];
+            if ([jsonDict objectForKey:@"image_urls"]) {
+                NSArray *urls = [jsonDict objectForKey:@"image_urls"];
+                imageURL = urls[0];
                 
                 picture = [HTTPRequest getImageFromFileExtension:imageURL];
             }
@@ -224,50 +225,5 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //dont do anything
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
