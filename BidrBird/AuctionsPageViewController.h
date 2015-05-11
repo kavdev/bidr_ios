@@ -1,12 +1,15 @@
 //
-//  AuctionsTableViewController.h
+//  AuctionsPageViewController.h
 //  BidrBird
 //
-//  Created by Zachary Glazer on 12/3/14.
-//  Copyright (c) 2014 Zachary Glazer. All rights reserved.
+//  Created by Zachary Glazer on 4/20/15.
+//  Copyright (c) 2015 Zachary Glazer. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "UpcomingAuctionsTableTableViewController.h"
+#import "OngoingAuctionsTableViewController.h"
+#import "CompleteAuctionsTableViewController.h"
 #import "CompleteAuction.h"
 #import "OngoingAuction.h"
 #import "UpcomingAuction.h"
@@ -17,10 +20,10 @@
 #import "NavigationController.h"
 #import "HTTPRequest.h"
 
-@interface AuctionsTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
-    NSMutableArray *upcomingAuctions;
-    NSMutableArray *ongoingAuctions;
-    NSMutableArray *completeAuctions;
+@interface AuctionsPageViewController : UIPageViewController <UIPageViewControllerDataSource, NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    @public NSMutableArray *upcomingAuctions;
+    @public NSMutableArray *ongoingAuctions;
+    @public NSMutableArray *completeAuctions;
     NSMutableData *responseData;
     BOOL loggedOut;
 }

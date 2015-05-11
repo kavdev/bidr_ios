@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) NSString *token;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
 
 - (IBAction)goToLogIn:(id)sender;
 - (IBAction)registerNewUser:(id)sender;

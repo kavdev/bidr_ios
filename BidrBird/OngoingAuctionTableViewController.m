@@ -28,7 +28,7 @@
 - (void) refresh {
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
     
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:userSessionInfo.auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,12 +36,13 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithAuction:(OngoingAuction *)auction navigationController:(NavigationController *)controller {
+-(id) initWithAuction:(OngoingAuction *)auction userSessionInfo:(UserSessionInfo *)info {
     self->auction = auction;
+    self->userSessionInfo = info;
     
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
 
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:controller.auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:info.auth_token delegate:self];
     
     return self;
 }
@@ -55,10 +56,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-   if (section == BID_ON_ITEMS_SECTION) {
+   if (section == WINNING_SECTION) {
       return self->auction->bidOnItems.count;
-   } else {
+   } else if (section == LOSING_SECTION) {
       return self->auction->otherItems.count;
+   } else if (section == UNBID) {
+       
    }
 }
 
@@ -194,7 +197,7 @@
                 NSDictionary *bidDict = bids[count];
                 
                 if ([bidDict objectForKey:@"user"] != nil) {
-                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [((NavigationController*)self.navigationController).user_id intValue]) {
+                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [userSessionInfo.user_id intValue]) {
                         bidOnItem = true;
                         break;
                     }                
@@ -225,5 +228,23 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //dont do anything
 }
+
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    
+//    if (self.isMovingToParentViewController == false)
+//    {
+//        // we're already on the navigation stack
+//        // another controller must have been popped off
+//        [self.refreshControl beginRefreshing];
+//        [self refresh];
+//    }
+//}
+
+//- (void)viewDidAppear:(BOOL)animated {
+//    [self.refreshControl beginRefreshing];
+//    [self refresh];
+//}
 
 @end

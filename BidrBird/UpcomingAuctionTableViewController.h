@@ -10,13 +10,16 @@
 #import "UpcomingAuction.h"
 #import "UpcomingAuctionItemViewController.h"
 #import "Item.h"
-#import "NavigationController.h"
+//#import "NavigationController.h"
+#import "HTTPRequest.h"
+#import "UserSessionInfo.h"
 
 @interface UpcomingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     UpcomingAuction *auction;
     NSMutableData *responseData;
+    UserSessionInfo *userSessionInfo;
 }
 
--(id) initWithAuction:(UpcomingAuction *)auction navigationController:(NavigationController *)controller;
+-(id) initWithAuction:(UpcomingAuction *)auction userSessionInfo:(UserSessionInfo *)info;
 
 @end

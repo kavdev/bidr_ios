@@ -16,6 +16,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //[self.navigationBar setBackgroundColor:[UIColor colorWithRed:60 green:199 blue:97 alpha:1]];
+    //[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithRed:60.f/255.0 green:199.f/255.0 blue:97.f/255.0 alpha:1.0]];
+    //[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+//    [[UINavigationBar appearance] setBackgroundImage: [UIImage imageNamed: @"bidr_bird.png"] forBarMetrics:UIBarMetricsDefault];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -52,6 +59,10 @@
     if (responseData != nil) {
         [responseData setData:nil];
     }
+    
+    //do this even though it will not work in order to show the list
+    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.userSessionInfo.user_id];
+    [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.userSessionInfo.auth_token delegate:[self topViewController]];
 }
 
 // This method is used to process the data after connection has made successfully.
@@ -63,24 +74,44 @@
     NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
+    
+    NSString *name;
+    NSString *phone;
+    NSString *ID;
+    NSString *email;
+    
     if ([jsonDict objectForKey:@"name"]) {
-        self.user_name = [jsonDict objectForKey:@"name"];
+        name = [jsonDict objectForKey:@"name"];
     }
     if ([jsonDict objectForKey:@"phone_number"]) {
-        self.user_phone_number = [jsonDict objectForKey:@"phone_number"];
+        phone = [jsonDict objectForKey:@"phone_number"];
     }
     if ([jsonDict objectForKey:@"id"]) {
-        self.user_id = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
+        ID = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
     }
     if ([jsonDict objectForKey:@"email"]) {
-        self.user_email = [jsonDict objectForKey:@"email"];
+        email = [jsonDict objectForKey:@"email"];
     }
     
+    [self.userSessionInfo initWithUserEmail:email userID:ID userName:name userPhoneNumber:phone];
+    
     [responseData setData:nil];
+        
+    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.userSessionInfo.user_id];
     
-    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.user_id];
-    
-    [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.auth_token delegate:[self topViewController]];
+    [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.userSessionInfo.auth_token delegate:[self topViewController]];
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated
+{
+    if([[self.viewControllers lastObject] class] == [UpcomingAuctionTableViewController class] || 
+       [[self.viewControllers lastObject] class] == [OngoingAuctionTableViewController class] || 
+       [[self.viewControllers lastObject] class] == [CompleteAuctionTableViewController class]){
+        
+        return [self popToRootViewControllerAnimated:animated];
+    } else {
+        return [super popViewControllerAnimated:animated];
+    }
 }
 
 @end

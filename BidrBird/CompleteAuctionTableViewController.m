@@ -28,7 +28,7 @@
 - (void) refresh {
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
     
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:userSessionInfo.auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,12 +36,13 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithAuction:(CompleteAuction *)auction navigationController:(NavigationController *)controller {
+-(id) initWithAuction:(CompleteAuction *)auction userSessionInfo:(UserSessionInfo *)info {
     self->auction = auction;
+    self->userSessionInfo = info;
     
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
     
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:controller.auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:info.auth_token delegate:self];
     
     return self;
 }
@@ -188,7 +189,13 @@
             if ([jsonDict objectForKey:@"min_price"] != nil) {
                 minPrice = [(NSNumber*)[jsonDict objectForKey:@"min_price"] doubleValue];
             }
-            Item *completedItem = [[Item alloc] initWithName:name description:description highestBid:highestBid->amount condition:nil picture:picture itemID:itemID minimumBid:minPrice];
+            Item *completedItem;
+            if (highestBid != nil) {
+                completedItem = [[Item alloc] initWithName:name description:description highestBid:highestBid->amount condition:nil picture:picture itemID:itemID minimumBid:minPrice];
+            } else {
+                completedItem = [[Item alloc] initWithName:name description:description highestBid:0 condition:nil picture:picture itemID:itemID minimumBid:minPrice];
+            }
+            
             
             
             NSArray *bids;
@@ -202,13 +209,13 @@
                 NSDictionary *bidDict = bids[count];
                 
                 if ([bidDict objectForKey:@"user"] != nil) {
-                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [((NavigationController*)self.navigationController).user_id intValue]) {
+                    if ([(NSNumber *)[bidDict objectForKey:@"user"] intValue] == [userSessionInfo.user_id intValue]) {
                         bidOnItem = true;
                         break;
                     }                
                 }
             }
-            if (highestBid != nil && highestBid->userID == [((NavigationController*)self.navigationController).user_id intValue]) {
+            if (highestBid != nil && highestBid->userID == [userSessionInfo.user_id intValue]) {
                 wonItem = true;
             }
             

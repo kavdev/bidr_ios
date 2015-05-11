@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 Zachary Glazer. All rights reserved.
 //
 
+#ifndef BidrBird_Bid_h
+#define BidrBird_Bid_h
+
 #import <Foundation/Foundation.h>
 
 @interface Bid : NSObject {
@@ -17,3 +20,5 @@
 -(id) initWithAmount:(double)amount userID:(int)userID;
 
 @end
+
+#endif

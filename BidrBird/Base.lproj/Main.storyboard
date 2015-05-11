@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
         <!--Log In View Controller-->
@@ -74,12 +74,17 @@
                                     <segue destination="JZ2-7Y-FWL" kind="presentation" id="6qL-Oo-xZu"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" alpha="0.49999999999999961" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VHa-g9-C4W">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="emailTextField" destination="OrD-c4-9hC" id="uSJ-r4-R22"/>
+                        <outlet property="loadingView" destination="VHa-g9-C4W" id="Heo-7p-caC"/>
                         <outlet property="passwordTextField" destination="f4j-p8-zyX" id="LdP-Ya-Smf"/>
                     </connections>
                 </viewController>
@@ -193,12 +198,17 @@
                                     <action selector="registerNewUser:" destination="JZ2-7Y-FWL" eventType="touchUpInside" id="pE2-5E-h09"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" alpha="0.49999999999999961" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kmr-h0-Xzg">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="confirmPasswordTextField" destination="LKK-bq-qdr" id="4Pf-kV-sAD"/>
                         <outlet property="emailTextField" destination="hmD-Ss-38k" id="jc7-yG-C0w"/>
+                        <outlet property="loadingView" destination="kmr-h0-Xzg" id="pYU-Uv-cUJ"/>
                         <outlet property="nameTextField" destination="v5x-7G-mrB" id="YqH-fP-XqR"/>
                         <outlet property="passwordTextField" destination="oJ0-AJ-Nsk" id="Far-Mg-PQs"/>
                         <outlet property="phoneNumberTextField" destination="zuO-8h-J0f" id="bGY-62-FN3"/>
@@ -209,48 +219,108 @@
             </objects>
             <point key="canvasLocation" x="251" y="949"/>
         </scene>
-        <!--Auctions-->
-        <scene sceneID="Pgf-Rd-DbQ">
+        <!--Upcoming Auctions Table Table View Controller-->
+        <scene sceneID="R4n-IB-Td9">
             <objects>
-                <tableViewController id="8XO-ak-Jrz" customClass="AuctionsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="AAR-SK-1er">
+                <tableViewController storyboardIdentifier="UpcomingAuctionsTableViewController" id="1q8-2U-F7R" customClass="UpcomingAuctionsTableTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Whv-hm-9ND">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="2bP-mC-Vx9">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="iYi-x6-SXW">
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2bP-mC-Vx9" id="goG-Vn-Jcu">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iYi-x6-SXW" id="O2d-vA-Xtr">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="8XO-ak-Jrz" id="cee-Y2-PZI"/>
-                            <outlet property="delegate" destination="8XO-ak-Jrz" id="2dB-Qd-J3D"/>
+                            <outlet property="dataSource" destination="1q8-2U-F7R" id="ZSw-9r-vc2"/>
+                            <outlet property="delegate" destination="1q8-2U-F7R" id="meK-Mu-noK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Auctions" id="fbA-fq-3r6">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="8Xt-te-I2O"/>
-                        <barButtonItem key="leftBarButtonItem" title="Add Auction" systemItem="add" id="dxx-2u-h50">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xK4-dc-oou" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="579" y="-945"/>
+        </scene>
+        <!--Ongoing Auctions Table View Controller-->
+        <scene sceneID="lCT-L6-LfA">
+            <objects>
+                <tableViewController storyboardIdentifier="OngoingAuctionsTableViewController" id="vv3-vp-a34" customClass="OngoingAuctionsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="GLB-Mh-YF7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="3A7-6T-f5H">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3A7-6T-f5H" id="Suf-5k-xPl">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="vv3-vp-a34" id="lTF-mX-P3C"/>
+                            <outlet property="delegate" destination="vv3-vp-a34" id="fAR-8e-GKC"/>
+                        </connections>
+                    </tableView>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YgS-dS-OVH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="971" y="-945"/>
+        </scene>
+        <!--Complete Auctions Table View Controller-->
+        <scene sceneID="JCp-lY-59c">
+            <objects>
+                <tableViewController storyboardIdentifier="CompleteAuctionsTableViewController" id="UH6-gG-V3P" customClass="CompleteAuctionsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aTQ-yE-Wjc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Jsx-F3-ZBz">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jsx-F3-ZBz" id="4SX-bA-kep">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UH6-gG-V3P" id="EDe-QQ-VqT"/>
+                            <outlet property="delegate" destination="UH6-gG-V3P" id="Rnd-fF-8j4"/>
+                        </connections>
+                    </tableView>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VMy-WI-GJG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1349" y="-945"/>
+        </scene>
+        <!--Auctions Page View Controller-->
+        <scene sceneID="kyH-qF-cPg">
+            <objects>
+                <pageViewController storyboardIdentifier="AuctionsPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="oN8-jk-6Ko" customClass="AuctionsPageViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="U0T-wZ-yWt">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="lLo-Lo-OTJ">
                             <connections>
-                                <segue destination="9gZ-xk-wmm" kind="show" id="ouX-Oj-NKU"/>
+                                <segue destination="9gZ-xk-wmm" kind="show" id="zCt-R1-yHC"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Sign Out" id="Knm-1b-GLx">
+                        <barButtonItem key="rightBarButtonItem" title="Log Out" id="m73-xn-yaC">
                             <connections>
-                                <action selector="signOut:" destination="8XO-ak-Jrz" id="MEf-mz-cMW"/>
+                                <action selector="signOut:" destination="oN8-jk-6Ko" id="FuP-0a-UoM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="addAuctionViewControllerButton" destination="dxx-2u-h50" id="Aw8-Xc-UHd"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hTw-53-gax" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZNe-kH-C7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1163" y="238"/>
+            <point key="canvasLocation" x="1163" y="-345"/>
         </scene>
         <!--Auction Items-->
         <scene sceneID="37g-PW-Qo1">
@@ -329,6 +399,8 @@
                             <outlet property="delegate" destination="npt-Kz-zEo" id="QQ4-2j-bGO"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dyh-rf-fne" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -385,7 +457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wRT-qM-o7m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331" y="-703"/>
+            <point key="canvasLocation" x="2819" y="-703"/>
         </scene>
         <!--Complete Auction Item View Controller-->
         <scene sceneID="dNP-mc-K9B">
@@ -437,7 +509,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q7i-d8-wR2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331" y="585"/>
+            <point key="canvasLocation" x="2819" y="585"/>
         </scene>
         <!--Ongoing Auction Item View Controller-->
         <scene sceneID="F79-9u-Nkk">
@@ -507,6 +579,10 @@
                                             <action selector="hideKeypad:" destination="AbQ-JA-jxv" eventType="touchUpInside" id="PkD-he-Nid"/>
                                         </connections>
                                     </button>
+                                    <view hidden="YES" alpha="0.49999999999999961" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VK3-dZ-wKo">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="481"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -518,13 +594,14 @@
                         <outlet property="descriptionLabel" destination="EQb-h3-PG7" id="1ug-k7-nLM"/>
                         <outlet property="hidKeypadButton" destination="mW4-pA-Cbd" id="a2H-V4-fN8"/>
                         <outlet property="imageView" destination="TAN-O5-rYV" id="BIZ-Qa-Gs2"/>
+                        <outlet property="loadingView" destination="VK3-dZ-wKo" id="v11-aU-kTO"/>
                         <outlet property="makeBidTextField" destination="rZy-2u-2qI" id="8im-gp-7oe"/>
                         <outlet property="placeBidButton" destination="Db9-JB-aQi" id="qxj-sJ-bhn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fOg-Zf-lKZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331" y="-71"/>
+            <point key="canvasLocation" x="2819" y="-71"/>
         </scene>
         <!--Sign up for Auction-->
         <scene sceneID="3aY-7H-Esw">
@@ -535,7 +612,7 @@
                         <viewControllerLayoutGuide type="bottom" id="C0W-a9-eeT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TCE-Aa-2OF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Auction ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0N-4c-TLs">
@@ -587,12 +664,14 @@
         <scene sceneID="QBr-eB-fOf">
             <objects>
                 <navigationController storyboardIdentifier="navContoller" id="auL-LI-y3v" customClass="NavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="G4y-6n-q9j">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="G4y-6n-q9j">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.23529411759999999" green="0.78039215689999997" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="8XO-ak-Jrz" kind="relationship" relationship="rootViewController" id="gP1-U1-ouW"/>
+                        <segue destination="oN8-jk-6Ko" kind="relationship" relationship="rootViewController" id="Ktf-Tp-1ee"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i6L-wK-FGA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -640,6 +719,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iGf-Ng-sO7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1651" y="-71"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="o0Q-Ac-lam">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="J2r-OG-lPv" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UNC-Ag-Laf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2253" y="-71"/>
         </scene>
     </scenes>
 </document>

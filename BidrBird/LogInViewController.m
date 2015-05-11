@@ -32,7 +32,19 @@
     if (self.emailTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", self.emailTextField.text, self.passwordTextField.text];
         
+        UIActivityIndicatorView  *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setCenter:self.view.center];
+        [spinner setColor:[UIColor whiteColor]];
+        spinner.tag  = 1;
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+        self.loadingView.hidden = false;
+        [self dismissKeyboard:self];
+        
         [HTTPRequest POST:post toExtension:@"auth/login/" delegate:self];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Missing Info" message:@"Please fill in all the boxes." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
     }
     
     
@@ -63,6 +75,13 @@
     NSLog(@"FAIL");
     NSLog([error description]);
     
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Something went wrong" message:@"Please try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
     if (responseData != nil) {
         [responseData setData:nil];
     }
@@ -74,6 +93,11 @@
     
     NSLog(@"Finished Loading");
     
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    
     NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
@@ -81,14 +105,15 @@
         token = [jsonDict objectForKey:@"auth_token"];
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
-        ((NavigationController *) vc).auth_token = token;
+        ((NavigationController *) vc).userSessionInfo = [[UserSessionInfo alloc] init];
+        ((NavigationController *) vc).userSessionInfo.auth_token = token;
         [HTTPRequest GET:@"" toExtension:@"auth/me/" withAuthToken:token delegate:vc];
         vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:vc animated:YES completion:NULL];
         NSLog(@"auth_token: %@", token);
-    } else if([jsonDict objectForKey:@"non_field_errors"] != nil) {
+    } else if([jsonDict objectForKey:@"non_field_errors"] != nil || [jsonDict objectForKey:@"email"] != nil) {
         NSString *errorString = [((NSArray*)[jsonDict objectForKey:@"non_field_errors"]) objectAtIndex:0];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email or password" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Forgot password", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email or password" message:@"Unable to login with provided credentials" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Forgot password", nil];
         [alert show];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was a server error. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

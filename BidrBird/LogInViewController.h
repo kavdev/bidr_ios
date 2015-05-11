@@ -20,6 +20,7 @@
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *loginVert;
 @property (strong, nonatomic) IBOutlet UITextField *emailTextField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
 
 - (IBAction)logIn:(id)sender;
 - (IBAction)dismissKeyboard:(id)sender;

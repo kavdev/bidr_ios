@@ -22,10 +22,12 @@
 @property (strong, nonatomic) IBOutlet UIButton *placeBidButton;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (strong, nonatomic) IBOutlet UIButton *hidKeypadButton;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
 
 - (IBAction)placeBid:(id)sender;
 - (IBAction)hideKeypad:(id)sender;
 - (IBAction)startedEditing:(id)sender;
+- (bool) isNumeric:(NSString*)checkText;
 
 -(id) initWithItem:(Item*)items;
 

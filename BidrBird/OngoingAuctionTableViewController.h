@@ -10,18 +10,22 @@
 #import "OngoingAuctionItemViewController.h"
 #import "OngoingAuction.h"
 #import "Item.h"
+//#import "NavigationController.h"
 #import "HTTPRequest.h"
-#import "NavigationController.h"
+#import "UserSessionInfo.h"
 
-#define NUM_SECTIONS 2
-#define BID_ON_ITEMS_SECTION 0
-#define OTHER_ITEMS_SECTION 1
+#define NUM_SECTIONS 3
+#define WINNING_SECTION 0
+#define LOSING_SECTION 1
+#define UNBID 2
 
 @interface OngoingAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
     OngoingAuction *auction;
     NSMutableData *responseData;
+    UserSessionInfo *userSessionInfo;
 }
 
--(id) initWithAuction:(OngoingAuction *)auction navigationController:(NavigationController *)controller;
+-(id) initWithAuction:(OngoingAuction *)auction userSessionInfo:(UserSessionInfo *)info;
+- (void) refresh;
 
 @end

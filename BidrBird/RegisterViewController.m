@@ -47,8 +47,20 @@
             
             NSString *post = [NSString stringWithFormat:@"name=%@&email=%@&phone_number=%%2B1%@&password=%@", self.nameTextField.text, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
             
+            UIActivityIndicatorView  *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [spinner setCenter:self.view.center];
+            [spinner setColor:[UIColor whiteColor]];
+            spinner.tag  = 1;
+            [self.view addSubview:spinner];
+            [spinner startAnimating];
+            self.loadingView.hidden = false;
+            [self dismissKeyboard:self];
+            
             [HTTPRequest POST:post toExtension:@"auth/register/" delegate:self];
         }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Missing Info" message:@"Please fill in all the boxes." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
     }
 }
 
@@ -75,6 +87,13 @@
     NSLog(@"FAIL");
     NSLog([error description]);
     
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Something went wrong" message:@"Please try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
     if (responseData != nil) {
         [responseData setData:nil];
     }
@@ -84,6 +103,11 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Finished Loading");
     
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    
     NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
@@ -92,7 +116,8 @@
         self.token = [jsonDict objectForKey:@"auth_token"];
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"navContoller"];
-        ((NavigationController *) vc).auth_token = self.token;
+        ((NavigationController *) vc).userSessionInfo = [[UserSessionInfo alloc] init];
+        ((NavigationController *) vc).userSessionInfo.auth_token = self.token;
         [HTTPRequest GET:@"" toExtension:@"auth/me/" withAuthToken:self.token delegate:vc];
         vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:vc animated:YES completion:NULL];
@@ -100,6 +125,10 @@
     } else if ([jsonDict objectForKey:@"email"] != nil) {
         if ([((NSString *)[((NSArray*)[jsonDict objectForKey:@"email"]) objectAtIndex:0]) isEqualToString:@"This field must be unique."]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email already in use" message:@"There is already an account using this email address.  Please use a different email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            NSLog(@"OOPS");
+        } else if ([((NSString *)[((NSArray*)[jsonDict objectForKey:@"email"]) objectAtIndex:0]) isEqualToString:@"Enter a valid email address."]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Email" message:@"Please enter a valid email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             NSLog(@"OOPS");
         }

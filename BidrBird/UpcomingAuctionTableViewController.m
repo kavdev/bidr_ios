@@ -28,7 +28,7 @@
 - (void)refresh {
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
     
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:((NavigationController*)self.navigationController).auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:userSessionInfo.auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,12 +36,13 @@
     // Dispose of any resources that can be recreated.
 }
 
--(id) initWithAuction:(UpcomingAuction *)auction navigationController:(NavigationController *)controller {
+-(id) initWithAuction:(UpcomingAuction *)auction userSessionInfo:(UserSessionInfo *)info; {
     self->auction = auction;
+    self->userSessionInfo = info;
     
     NSString *exten = [[NSString alloc] initWithFormat:@"auctions/%@/items/", [self->auction getAuctionID]];
     
-    [HTTPRequest GET:@"" toExtension:exten withAuthToken:controller.auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:exten withAuthToken:info.auth_token delegate:self];
     
     return self;
 }

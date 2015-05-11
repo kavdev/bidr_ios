@@ -44,12 +44,12 @@
         NSString *extenstion = [NSString stringWithFormat:@"auctions/%d/participants/add/", idnum];
         NSString *put;
         if (password.length > 0) {
-            put = [NSString stringWithFormat:@"user_email=%@&optional_password=%@", ((NavigationController *)self.parentViewController).user_email, password];
+            put = [NSString stringWithFormat:@"user_email=%@&optional_password=%@", ((NavigationController *)self.parentViewController).userSessionInfo.user_email, password];
         } else {
-            put = [NSString stringWithFormat:@"user_email=%@", ((NavigationController *)self.parentViewController).user_email];
+            put = [NSString stringWithFormat:@"user_email=%@", ((NavigationController *)self.parentViewController).userSessionInfo.user_email];
         }
     
-        [HTTPRequest PUT:put toExtension:extenstion withAuthToken:((NavigationController *)self.parentViewController).auth_token delegate:self];
+        [HTTPRequest PUT:put toExtension:extenstion withAuthToken:((NavigationController *)self.parentViewController).userSessionInfo.auth_token delegate:self];
     }
 }
 
@@ -86,15 +86,15 @@
             if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 0) {
                 auction = [[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
-                vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction navigationController:(NavigationController*)self.navigationController];
+                vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
             } else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
                 auction = [[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
-                vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction navigationController:(NavigationController*)self.navigationController];
+                vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
             } else {
                 auction = [[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
-                vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction navigationController:(NavigationController*)self.navigationController];
+                vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
             }
             [self.navigationController pushViewController:vc animated:YES];
         }

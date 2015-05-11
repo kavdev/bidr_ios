@@ -8,11 +8,15 @@
 
 #import "HTTPRequest.h"
 
-NSString *const WebAddress = @"https://bidr.herokuapp.com";
+//NSString *const WebAddress = @"https://bidr.herokuapp.com";
 //NSString *const WebAddress = @"http://bidr-staging.herokuapp.com";
 //NSString *const WebAddress = @"http://192.168.2.4:8020";
 //NSString *const WebAddress = @"http://127.0.0.1:8020";
 //NSString *const WebAddress = @"http://129.65.76.124:8020";
+//NSString *const WebAddress = @"http://192.168.2.10:8020";
+//NSString *const WebAddress = @"http://129.65.77.111:8020";
+NSString *const WebAddress = @"http://192.168.2.11:8020";
+//NSString *const WebAddress = @"http://129.65.76.58:8020";
 
 @implementation HTTPRequest
 
