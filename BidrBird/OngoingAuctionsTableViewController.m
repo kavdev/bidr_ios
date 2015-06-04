@@ -14,6 +14,10 @@
 
 @implementation OngoingAuctionsTableViewController
 
+- (void) viewWillAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -50,9 +54,9 @@
 }
 
 - (void) refresh {
-    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", ((NavigationController*)self.navigationController).userSessionInfo.user_id];
+    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self->userSessionInfo.user_id];
     
-    [HTTPRequest GET:@"" toExtension:extension withAuthToken:((NavigationController*)self.navigationController).userSessionInfo.auth_token delegate:self];
+    [HTTPRequest GET:@"" toExtension:extension withAuthToken:self->userSessionInfo.auth_token delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,8 +89,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
     }
+        
+    NSArray *keyArr = [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions allKeys];
     
-    auction = ((OngoingAuction *)[((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions objectAtIndex:indexPath.row]);
+    auction = [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions objectForKey:[keyArr objectAtIndex:indexPath.row]];
     
     cell.textLabel.text = auction.getName;
     cell.imageView.image = auction.getPicture;
@@ -96,15 +102,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Auction *auction;
-    UIViewController * vc;
+    OngoingAuctionTableViewController * vc;
+        
+    NSArray *keyArr = [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions allKeys];
     
-    auction = [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions objectAtIndex:indexPath.row];
+    NSString *key = [keyArr objectAtIndex:indexPath.row];
+    
+    auction = [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions objectForKey:key];
     
     NSString * storyboardName = @"Main";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
     
     vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
-    vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
+    vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction userSessionInfo:self->userSessionInfo];
+    vc.delegate = (AuctionsPageViewController *)self.parentViewController;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -142,54 +153,49 @@
     NSLog(@"jsonString: %@", jsonString);
     if ([jsonDict objectForKey:@"participants"] != nil) {
         NSArray *auctionsSignedUpFor = [jsonDict objectForKey:@"participants"];
+        [((AuctionsPageViewController *)self.parentViewController)->upcomingAuctions removeAllObjects];
         [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions removeAllObjects];
-        //        [self->completeAuctions removeAllObjects];
-        //        [self->ongoingAuctions removeAllObjects];
+        [((AuctionsPageViewController *)self.parentViewController)->completeAuctions removeAllObjects];
         
         for (int count = 0; count < auctionsSignedUpFor.count; count++) {
             jsonDict = auctionsSignedUpFor[count];
             NSString *name;
             NSString *auctionid;
+            int minBidInc = 1;
             if ([jsonDict objectForKey:@"name"] != nil) {
                 name = [jsonDict objectForKey:@"name"];
             }
             if ([jsonDict objectForKey:@"id"] != nil) {
                 auctionid = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
             }
+            if ([jsonDict objectForKey:@"bid_increment"] != nil) {
+                minBidInc = [(NSNumber *)[jsonDict objectForKey:@"bid_increment"] intValue];
+            }
+            
+            
             if ([jsonDict objectForKey:@"stage"] != nil) {
-                if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
-                    if (((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions == nil) {
-                        ((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
+                if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 0) {
+                    if (((AuctionsPageViewController *)self.parentViewController)->upcomingAuctions == nil) {
+                        ((AuctionsPageViewController *)self.parentViewController)->upcomingAuctions = [NSMutableDictionary dictionaryWithObject:[[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
                     } else {
-                        [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions addObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
+                        [((AuctionsPageViewController *)self.parentViewController)->upcomingAuctions setObject:[[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
                     }
-                } //else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
-                //                    if (self->ongoingAuctions == nil) {
-                //                        self->ongoingAuctions = [[NSMutableArray alloc] initWithObjects:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
-                //                    } else {
-                //                        [self->ongoingAuctions addObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
-                //                    }
-                //                } else {
-                //                    if (self->completeAuctions == nil) {
-                //                        self->completeAuctions = [[NSMutableArray alloc] initWithObjects:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil], nil];
-                //                    } else {
-                //                        [self->completeAuctions addObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil]];
-                //                    }
-                //                }
+                } else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
+                    if (((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions == nil) {
+                        ((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions = [NSMutableDictionary dictionaryWithObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
+                    } else {
+                        [((AuctionsPageViewController *)self.parentViewController)->ongoingAuctions setObject:[[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
+                    }
+                } else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] >= 2) {
+                    if (((AuctionsPageViewController *)self.parentViewController)->completeAuctions == nil) {
+                        ((AuctionsPageViewController *)self.parentViewController)->completeAuctions = [NSMutableDictionary dictionaryWithObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
+                        
+                    } else {
+                        [((AuctionsPageViewController *)self.parentViewController)->completeAuctions setObject:[[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc] forKey:auctionid];
+                    }
+                }
             }
         }
-        
-        //        if ((self->ongoingAuctions == nil || self->ongoingAuctions.count == 0) &&
-        //            (self->ongoingAuctions == nil || self->ongoingAuctions.count == 0) &&
-        //            (self->completeAuctions == nil || self->completeAuctions.count == 0) &&
-        //            !self->loggedOut) {
-        //            //programatically "press" the add auction bar button item. Could have simply loaded the 
-        //            //view from the storyboard but whatever
-        //            [[UIApplication sharedApplication] sendAction:self.addAuctionViewControllerButton.action
-        //                                                       to:self.addAuctionViewControllerButton.target
-        //                                                     from:nil
-        //                                                 forEvent:nil];
-        //        }
         [self.tableView reloadData];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again by swiping down on the list." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -197,7 +203,6 @@
     }
     
     [responseData setData:nil];
-    
     
     [self.refreshControl endRefreshing];
 }

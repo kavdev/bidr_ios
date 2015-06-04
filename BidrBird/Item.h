@@ -10,23 +10,25 @@
 #define BidrBird_Item_h
 
 #import <UIKit/UIKit.h>
+#import "Bid.h"
 
 @interface Item : NSObject {
    @public
    NSString *name;
    NSString *description;
-   double highestBid;
+   Bid *highestBid;
    NSString *condition;
    UIImage *picture;
    int itemID;
-    double minBid;
+    int minBid;
+    Bid *usersHighestBid;
 }
 
-- (id) initWithName:(NSString*)name description:(NSString*)description highestBid: (double)highestBid condition:(NSString*)condition picture:(UIImage*)picture itemID:(int)itemID minimumBid:(double)minBid;
+- (id) initWithName:(NSString*)name description:(NSString*)description highestBid: (Bid *)highestBid condition:(NSString*)condition picture:(UIImage*)picture itemID:(int)itemID minimumBid:(int)minBid usersHighestBid:(Bid*)uHBid;
 
 - (NSString*) getName;
 - (NSString*) getDescription;
-- (double) getHightestBid;
+- (Bid *) getHightestBid;
 - (NSString*) getCondition;
 - (UIImage*) getPicture;
 

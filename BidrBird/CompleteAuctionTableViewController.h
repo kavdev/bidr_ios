@@ -11,11 +11,12 @@
 #import "CompleteAuctionItemViewController.h"
 #import "Bid.h"
 #import "CompleteAuction.h"
-//#import "NavigationController.h"
 #import "HTTPRequest.h"
 #import "UserSessionInfo.h"
+#import "UIImage+resizeImage.h"
 
 @interface CompleteAuctionTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    @public
     CompleteAuction *auction;
     NSMutableData *responseData;
     UserSessionInfo *userSessionInfo;

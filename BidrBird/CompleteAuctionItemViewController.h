@@ -8,15 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #include "Item.h"
+#include "UserSessionInfo.h"
+
+@class CompleteAuctionItemViewController;
+
+@protocol CompletAuctionItemViewDelegate
+- (void) replaceCompletedItemWithID:(NSString *)itemID forAuctionWithID:(NSString *)auctionID withItem:(Item *)item;
+@end
 
 @interface CompleteAuctionItemViewController : UIViewController {
-   Item *item;
+    Item *item;
+    NSString *auctionID;
+    UserSessionInfo *userSessionInfo;
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UILabel *wonForLabel;
-@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 
-- (id) initWithItem:(Item*)item;
+- (id) initWithItem:(Item*)item fromAuctionWithID:(NSString *)auctionID userSessionInfo:(UserSessionInfo *)info;
 
 @end

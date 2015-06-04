@@ -8,15 +8,10 @@
 
 #import "HTTPRequest.h"
 
-//NSString *const WebAddress = @"https://bidr.herokuapp.com";
+NSString *const WebAddress = @"https://bidr.herokuapp.com";
 //NSString *const WebAddress = @"http://bidr-staging.herokuapp.com";
-//NSString *const WebAddress = @"http://192.168.2.4:8020";
-//NSString *const WebAddress = @"http://127.0.0.1:8020";
-//NSString *const WebAddress = @"http://129.65.76.124:8020";
-//NSString *const WebAddress = @"http://192.168.2.10:8020";
-//NSString *const WebAddress = @"http://129.65.77.111:8020";
-NSString *const WebAddress = @"http://192.168.2.11:8020";
-//NSString *const WebAddress = @"http://129.65.76.58:8020";
+//NSString *const WebAddress = @"http://192.168.2.8:8020";
+//NSString *const WebAddress = @"http://129.65.248.234:8020";
 
 @implementation HTTPRequest
 
@@ -118,7 +113,12 @@ NSString *const WebAddress = @"http://192.168.2.11:8020";
 }
 
 + (UIImage *) getImageFromFileExtension:(NSString*)extension {
-    NSString *url = [NSString stringWithFormat:@"%@%@", WebAddress, extension];
+    NSString *url;
+    if ([extension isEqualToString:@"/static/img/no_image.png"]) {
+        url = [NSString stringWithFormat:@"%@%@", WebAddress, extension];
+    } else {
+        url = extension;
+    }
     
     NSData *data = [NSData alloc];
     data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];

@@ -10,10 +10,11 @@
 
 @implementation Auction
 
--(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
+-(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture  minBidInc:(int)minBidInc {
     self->name = name;
     self->picture = picture;
     self->auctionID = auctionid;
+    self->minBidInc =  minBidInc;
     
     return self;
 }

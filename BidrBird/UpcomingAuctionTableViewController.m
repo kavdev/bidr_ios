@@ -74,12 +74,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
     }
     
-    if (indexPath.section == 0) {
-        item = [self->auction->items objectAtIndex:indexPath.row];
-    }
+    NSArray *keys = [self->auction->items allKeys];
+    
+    item = [self->auction->items objectForKey:[keys objectAtIndex:indexPath.row]];
     
     cell.textLabel.text = item.getName;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%.2f", @"$ ", item->minBid];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%d", @"$ ", item->minBid];
     cell.imageView.image = item.getPicture;
     
     return cell;
@@ -87,14 +87,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Item *item;
-    if (indexPath.section == 0) {
-        item = [self->auction->items objectAtIndex:indexPath.row];
-    }
+    
+    NSArray *keys = [self->auction->items allKeys];
+    
+    item = [self->auction->items objectForKey:[keys objectAtIndex:indexPath.row]];
     
     NSString * storyboardName = @"Main";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
     UpcomingAuctionItemViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionItemViewController"];
-    vc = [vc initWithItem:item];
+    vc = [vc initWithItem:item fromAuctionWithID:self->auction->auctionID userSessionInfo:self->userSessionInfo];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -130,52 +131,87 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     
-    if([jsonDict objectForKey:@"bidables"] != nil) {
-        NSArray *bidables = [jsonDict objectForKey:@"bidables"];
-        [self->auction->items removeAllObjects];
+    if ([jsonDict objectForKey:@"stage"] != nil) {
+        int stage = [(NSNumber *)[jsonDict objectForKey:@"stage"] intValue];
         
-        for (int count = 0; count < bidables.count; count++) {
-            jsonDict = bidables[count];
-            NSString *name;
-            double highestBid = 0;
-            NSString *imageURL;
-            NSString *description;
-            UIImage *picture;
-            int itemID = -1;
-            double minPrice = 0;
-            
-            if ([jsonDict objectForKey:@"name"] != nil) {
-                name = [jsonDict objectForKey:@"name"];
-            }
-            if ([jsonDict objectForKey:@"highest_bid"] != nil && ![[jsonDict objectForKey:@"highest_bid"] isKindOfClass:[NSNull class]]) {
-                NSDictionary *highestBidDict = [jsonDict objectForKey:@"highest_bid"];
-                if ([highestBidDict objectForKey:@"amount"] != nil) {
-                    highestBid = [(NSString *)[highestBidDict objectForKey:@"amount"] doubleValue];
+        if (stage == 0) {
+    
+            if([jsonDict objectForKey:@"bidables"] != nil) {
+                NSArray *bidables = [jsonDict objectForKey:@"bidables"];
+                [self->auction->items removeAllObjects];
+                
+                for (int count = 0; count < bidables.count; count++) {
+                    jsonDict = bidables[count];
+                    NSString *name;
+                    int highestBid = 0;
+                    int highestBidUserID = -1;
+                    NSString *imageURL;
+                    NSString *description;
+                    UIImage *picture;
+                    int itemID = -1;
+                    int minPrice = 0;
+                    
+                    if ([jsonDict objectForKey:@"name"] != nil) {
+                        name = [jsonDict objectForKey:@"name"];
+                    }
+                    if ([jsonDict objectForKey:@"highest_bid"] != nil && ![[jsonDict objectForKey:@"highest_bid"] isKindOfClass:[NSNull class]]) {
+                        NSDictionary *highestBidDict = [jsonDict objectForKey:@"highest_bid"];
+                        if ([highestBidDict objectForKey:@"amount"] != nil) {
+                            highestBid = [(NSString *)[highestBidDict objectForKey:@"amount"] intValue];
+                        }
+                        if ([highestBidDict objectForKey:@"user"] != nil) {
+                            highestBidUserID = [(NSNumber *)[highestBidDict objectForKey:@"user"] intValue];
+                        }
+                    }
+                    if ([jsonDict objectForKey:@"image_urls"]) {
+                        NSArray *urls = [jsonDict objectForKey:@"image_urls"];
+                        imageURL = urls[0];
+                        
+                        picture = [HTTPRequest getImageFromFileExtension:imageURL];
+                        int newWidth, newHeight;
+                        if (picture.size.width > picture.size.height) {
+                            newWidth = 200;
+                            newHeight = 200 / picture.size.width * picture.size.height;
+                        } else {
+                            newHeight = 200;
+                            newWidth = 200 / picture.size.height * picture.size.width;
+                        }
+                        picture = [picture resizedImageWithSize:CGSizeMake(newWidth, newHeight)];
+                    }
+                    if ([jsonDict objectForKey:@"description"] != nil) {
+                        description = [jsonDict objectForKey:@"description"];
+                    }
+                    if ([jsonDict objectForKey:@"id"] != nil) {
+                        itemID = [[NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]] intValue];
+                    }
+                    if ([jsonDict objectForKey:@"min_price"] != nil) {
+                        minPrice = [(NSNumber*)[jsonDict objectForKey:@"min_price"] intValue];
+                    }
+                    Item *upcomingItem = [[Item alloc] initWithName:name description:description highestBid:nil condition:nil picture:picture itemID:itemID minimumBid:minPrice usersHighestBid:nil];
+                    
+                    if (self->auction->items == nil) {
+                        //self->auction->items = [NSMutableArray arrayWithObject:upcomingItem];
+                        self->auction->items = [NSMutableDictionary dictionaryWithObject:upcomingItem forKey:[@(itemID) stringValue]];
+                    } else {
+                        //[self->auction->items addObject:upcomingItem];
+                        [self->auction->items setObject:upcomingItem forKey:[@(itemID) stringValue]];
+                    }
                 }
             }
-            if ([jsonDict objectForKey:@"image_urls"]) {
-                NSArray *urls = [jsonDict objectForKey:@"image_urls"];
-                imageURL = urls[0];
-                
-                picture = [HTTPRequest getImageFromFileExtension:imageURL];
-            }
-            if ([jsonDict objectForKey:@"description"] != nil) {
-                description = [jsonDict objectForKey:@"description"];
-            }
-            if ([jsonDict objectForKey:@"id"] != nil) {
-                itemID = [[NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]] intValue];
-            }
-            if ([jsonDict objectForKey:@"min_price"] != nil) {
-                minPrice = [(NSNumber*)[jsonDict objectForKey:@"min_price"] doubleValue];
-            }
-            Item *upcomingItem = [[Item alloc] initWithName:name description:description highestBid:highestBid condition:nil picture:picture itemID:itemID minimumBid:minPrice];
-            
-            if (self->auction->items == nil) {
-                self->auction->items = [NSMutableArray arrayWithObject:upcomingItem];
+        } else {
+            if (stage == 1){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Auction Started" message:@"This auction has already started! You can now find it on the Ongoing Auctions page." delegate:self cancelButtonTitle:@"Go Back" otherButtonTitles:nil];
+                [alert show];
+                [self.delegate aucitonBeganWithID:self->auction->auctionID];
             } else {
-                [self->auction->items addObject:upcomingItem];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Auction Over" message:@"This auction has ended. You can now find it on the Complete Auctions page." delegate:self cancelButtonTitle:@"Go Back" otherButtonTitles:nil];
+                [alert show];
+                [self.delegate auctionEndedWithID:self->auction->auctionID];
             }
         }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" message:@"Something went wrong. Please try again later." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     }
     
     [responseData setData:nil];
@@ -185,7 +221,11 @@
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    //dont do anything
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([title isEqualToString:@"Go Back"]) {
+        [self.navigationController popToRootViewControllerAnimated:TRUE];
+    }
 }
 
 /*

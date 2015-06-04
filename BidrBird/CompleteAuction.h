@@ -14,14 +14,14 @@
 
 @interface CompleteAuction : Auction {
     @public
-    NSMutableArray *wonItems;
-    NSMutableArray *lostItems;
+    NSMutableDictionary *wonItems;
+    NSMutableDictionary *lostItems;
 }
 
-- (id) initWithWonItems:(NSMutableArray*)wonItems lostItems:(NSMutableArray *)lostItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+- (id) initWithWonItems:(NSMutableDictionary*)wonItems lostItems:(NSMutableDictionary *)lostItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc;
 
-- (NSMutableArray *) getWonItems;
-- (NSMutableArray *) getLostItems;
+- (NSMutableDictionary *) getWonItems;
+- (NSMutableDictionary *) getLostItems;
 
 @end
 

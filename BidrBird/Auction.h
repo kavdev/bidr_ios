@@ -19,12 +19,14 @@
 #import <UIKit/UIKit.h>
 
 @interface Auction : NSObject {
+    @public
     NSString *name;
     UIImage *picture;
     NSString *auctionID;
+    int minBidInc;
 }
 
--(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+-(id) initWithName:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc;
 
 - (NSString*) getName;
 - (UIImage*) getPicture;

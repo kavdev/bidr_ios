@@ -75,31 +75,38 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
     
-    NSString *name;
-    NSString *phone;
-    NSString *ID;
-    NSString *email;
-    
-    if ([jsonDict objectForKey:@"name"]) {
-        name = [jsonDict objectForKey:@"name"];
-    }
-    if ([jsonDict objectForKey:@"phone_number"]) {
-        phone = [jsonDict objectForKey:@"phone_number"];
-    }
-    if ([jsonDict objectForKey:@"id"]) {
-        ID = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
-    }
-    if ([jsonDict objectForKey:@"email"]) {
-        email = [jsonDict objectForKey:@"email"];
-    }
-    
-    [self.userSessionInfo initWithUserEmail:email userID:ID userName:name userPhoneNumber:phone];
-    
-    [responseData setData:nil];
+    if (![jsonDict objectForKey:@"ios_device_token_updated"] && ![jsonDict objectForKey:@"ios_device_token_not_updated"]) {
+        NSString *name;
+        NSString *phone;
+        NSString *ID;
+        NSString *email;
         
-    NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.userSessionInfo.user_id];
-    
-    [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.userSessionInfo.auth_token delegate:[self topViewController]];
+        if ([jsonDict objectForKey:@"name"]) {
+            name = [jsonDict objectForKey:@"name"];
+        }
+        if ([jsonDict objectForKey:@"phone_number"]) {
+            phone = [jsonDict objectForKey:@"phone_number"];
+        }
+        if ([jsonDict objectForKey:@"id"]) {
+            ID = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
+        }
+        if ([jsonDict objectForKey:@"email"]) {
+            email = [jsonDict objectForKey:@"email"];
+        }
+        
+        [self.userSessionInfo initWithUserEmail:email userID:ID userName:name userPhoneNumber:phone];
+        
+        [responseData setData:nil];
+        
+        NSString *updateDeviceTokenextension = [NSString stringWithFormat:@"users/%@/update_ios_device_token/", self.userSessionInfo.user_id];
+        
+        NSString *put = [NSString stringWithFormat:@"ios_device_token=%@", ((AppDelegate *)[[UIApplication sharedApplication] delegate]).deviceToken];
+        [HTTPRequest PUT:put toExtension:updateDeviceTokenextension withAuthToken:self.userSessionInfo.auth_token delegate:self];
+        
+        NSString *extension = [NSString stringWithFormat:@"users/%@/auctions/", self.userSessionInfo.user_id];
+        [HTTPRequest GET:@"" toExtension:extension withAuthToken:self.userSessionInfo.auth_token delegate:[self topViewController]];
+        ((AuctionsPageViewController *)self.topViewController)->userSessionInfo = self.userSessionInfo;
+    }
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated

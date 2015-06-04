@@ -11,7 +11,9 @@
 #import "UpcomingAuctionTableViewController.h"
 #import "OngoingAuctionTableViewController.h"
 #import "CompleteAuctionTableViewController.h"
+#import "AuctionsPageViewController.h"
 #import "UserSessionInfo.h"
+#import "AppDelegate.h"
 
 @interface NavigationController : UINavigationController <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
     NSMutableData *responseData;

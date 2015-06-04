@@ -10,16 +10,17 @@
 
 @implementation UpcomingAuction
 
-- (id) initWithItems:(NSArray*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
+- (id) initWithItems:(NSMutableDictionary*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc {
     self->items = items;
     self->name = name;
     self->picture = picture;
     self->auctionID = auctionid;
+    self->minBidInc = minBidInc;
     
     return self;
 }
 
-- (NSMutableArray*) getItems {
+- (NSDictionary*) getItems {
     return self->items;
 }
 

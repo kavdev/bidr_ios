@@ -44,12 +44,22 @@
         NSString *extenstion = [NSString stringWithFormat:@"auctions/%d/participants/add/", idnum];
         NSString *put;
         if (password.length > 0) {
-            put = [NSString stringWithFormat:@"user_email=%@&optional_password=%@", ((NavigationController *)self.parentViewController).userSessionInfo.user_email, password];
+            put = [NSString stringWithFormat:@"user_email=%@&optional_password=%@", self->userSessionInfo.user_email, password];
         } else {
-            put = [NSString stringWithFormat:@"user_email=%@", ((NavigationController *)self.parentViewController).userSessionInfo.user_email];
+            put = [NSString stringWithFormat:@"user_email=%@", self->userSessionInfo.user_email];
         }
-    
-        [HTTPRequest PUT:put toExtension:extenstion withAuthToken:((NavigationController *)self.parentViewController).userSessionInfo.auth_token delegate:self];
+        
+        UIActivityIndicatorView  *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setCenter:self.view.center];
+        [spinner setColor:[UIColor whiteColor]];
+        spinner.tag  = 1;
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+        self.loadingView.hidden = false;
+        [self.navigationController.navigationBar setUserInteractionEnabled:false];
+        [self.auctionIDTextEditor resignFirstResponder];
+        [self.passwordTextEditor resignFirstResponder];
+        [HTTPRequest PUT:put toExtension:extenstion withAuthToken:self->userSessionInfo.auth_token delegate:self];
     }
 }
 
@@ -67,15 +77,46 @@
     NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     NSLog(@"jsonString: %@", jsonString);
+    
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"FAIL");
+    NSLog([error description]);
+    
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    [self.navigationController.navigationBar setUserInteractionEnabled:false];
+    
+    if (responseData != nil) {
+        [responseData setData:nil];
+    }
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"Finished Loading");
+    
+    NSString* jsonString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
+    NSLog(@"jsonString: %@", jsonString);
+    
     if ([jsonDict objectForKey:@"participant_added"] != nil) {
         NSString *name;
         NSString *auctionid;
         int stage;
+        int minBidInc = 1;
         if ([jsonDict objectForKey:@"name"] != nil) {
             name = [jsonDict objectForKey:@"name"];
         }
         if ([jsonDict objectForKey:@"id"] != nil) {
             auctionid = [NSString stringWithFormat:@"%@", [jsonDict objectForKey:@"id"]];
+        }
+        if ([jsonDict objectForKey:@"bid_increment"] != nil) {
+            minBidInc = [(NSNumber *)[jsonDict objectForKey:@"bid_increment"] intValue];
         }
         if ([jsonDict objectForKey:@"stage"] != nil) {
             UIViewController * vc;
@@ -84,17 +125,23 @@
             Auction *auction;
             
             if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 0) {
-                auction = [[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil];
+                auction = [[UpcomingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
-                vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
+                vc = [(UpcomingAuctionTableViewController*)vc initWithAuction:(UpcomingAuction*)auction userSessionInfo:self->userSessionInfo];
+                ((UpcomingAuctionTableViewController *)vc).delegate = self.delegate;
+                [self.delegate addUpcomingAuction:(UpcomingAuction*)auction];
             } else if ([((NSNumber *)[jsonDict objectForKey:@"stage"]) intValue] == 1) {
-                auction = [[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil];
+                auction = [[OngoingAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"OngoingAuctionTableViewController"];
-                vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
+                vc = [(OngoingAuctionTableViewController*)vc initWithAuction:(OngoingAuction*)auction userSessionInfo:self->userSessionInfo];
+                ((OngoingAuctionTableViewController *)vc).delegate = self.delegate;
+                [self.delegate addOngoingAuction:(OngoingAuction*)auction];
             } else {
-                auction = [[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil];
+                auction = [[CompleteAuction alloc] initWithName:name auctionID:auctionid picture:nil minBidInc:minBidInc];
                 vc = [storyboard instantiateViewControllerWithIdentifier:@"UpcomingAuctionTableViewController"];
-                vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction userSessionInfo:((NavigationController*)self.navigationController).userSessionInfo];
+                vc = [(CompleteAuctionTableViewController*)vc initWithAuction:(CompleteAuction*)auction userSessionInfo:self->userSessionInfo];
+                
+                [self.delegate addCompleteAuction:(CompleteAuction*)auction];
             }
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -116,29 +163,26 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was a server error. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
-}
-
-// This method receives the error report in case of connection is not made to server.
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"FAIL");
-    NSLog([error description]);
     
-    if (responseData != nil) {
-        [responseData setData:nil];
-    }
-}
-
-// This method is used to process the data after connection has made successfully.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Finished Loading");
-    
-    
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.view viewWithTag:1];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    self.loadingView.hidden = true;
+    [self.navigationController.navigationBar setUserInteractionEnabled:false];
     
     [responseData setData:nil];
 }
-
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    //dont do anything
-}
+//
+//- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    //dont do anything
+//}
+//
+//- (void) replaceOngoingItemWithID:(NSString *)itemID forAuctionWithID:(NSString *)auctionID withItem:(Item *)item {
+//    [self.delegate replaceOngoingItemWithID:itemID forAuctionWithID:auctionID withItem:item];
+//}
+//
+//- (void) auctionWithIDEnded:(NSString *)auctionID {
+//    [self.delegate auctionWithIDEnded:auctionID];
+//}
 
 @end

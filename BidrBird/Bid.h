@@ -13,11 +13,12 @@
 
 @interface Bid : NSObject {
     @public
-    double amount;
+    int amount;
     int userID;
+    NSString *displayName;
 }
 
--(id) initWithAmount:(double)amount userID:(int)userID;
+-(id) initWithAmount:(int)amount userID:(int)userID displayName:(NSString *)displayName;
 
 @end
 

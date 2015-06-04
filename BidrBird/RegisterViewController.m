@@ -12,12 +12,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.nameTextField addTarget:self action:@selector(textFieldTouched:) forControlEvents:UIControlEventEditingDidBegin];
-    [self.emailTextField addTarget:self action:@selector(textFieldTouched:) forControlEvents:UIControlEventEditingDidBegin];
-    [self.phoneNumberTextField addTarget:self action:@selector(textFieldTouched:) forControlEvents:UIControlEventEditingDidBegin];
-    [self.passwordTextField addTarget:self action:@selector(textFieldTouched:) forControlEvents:UIControlEventEditingDidBegin];
-    [self.confirmPasswordTextField addTarget:self action:@selector(textFieldTouched:) forControlEvents:UIControlEventEditingDidBegin];
-    [self.scrollView setContentSize:CGSizeMake(320, 435)];
+    [self.nameTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [self.displayNameTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [self.emailTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [self.phoneNumberTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [self.passwordTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [self.confirmPasswordTextField addTarget:self action:@selector(textFieldDidBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+    
+    
+//    [self.scrollView setContentSize:CGSizeMake(320, 435)];
     
     // Do any additional setup after loading the view.
 }
@@ -44,19 +50,31 @@
 - (IBAction)registerNewUser:(id)sender {
     if (self.nameTextField.text.length > 0 && self.emailTextField.text.length > 0 && self.phoneNumberTextField.text.length > 0 && self.passwordTextField.text.length > 0 && self.confirmPasswordTextField.text.length > 0) {
         if ([self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text]) {
-            
-            NSString *post = [NSString stringWithFormat:@"name=%@&email=%@&phone_number=%%2B1%@&password=%@", self.nameTextField.text, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
-            
-            UIActivityIndicatorView  *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [spinner setCenter:self.view.center];
-            [spinner setColor:[UIColor whiteColor]];
-            spinner.tag  = 1;
-            [self.view addSubview:spinner];
-            [spinner startAnimating];
-            self.loadingView.hidden = false;
-            [self dismissKeyboard:self];
-            
-            [HTTPRequest POST:post toExtension:@"auth/register/" delegate:self];
+            if (self.displayNameTextField.text.length <= 30) {
+                NSString *post;
+                if (self.displayNameTextField.text.length == 0) {
+                    post = [NSString stringWithFormat:@"name=%@&display_name=Anonymous&email=%@&phone_number=%%2B1%@&password=%@", self.nameTextField.text, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
+                } else {
+                    post = [NSString stringWithFormat:@"name=%@&display_name=%@&email=%@&phone_number=%%2B1%@&password=%@", self.nameTextField.text, self.displayNameTextField, self.emailTextField.text, self.phoneNumberTextField.text, self.passwordTextField.text];
+                }
+                
+                UIActivityIndicatorView  *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                [spinner setCenter:self.view.center];
+                [spinner setColor:[UIColor whiteColor]];
+                spinner.tag  = 1;
+                [self.view addSubview:spinner];
+                [spinner startAnimating];
+                self.loadingView.hidden = false;
+                [self dismissKeyboard:self];
+                
+                [HTTPRequest POST:post toExtension:@"auth/register/" delegate:self];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Display Name too long." message:@"Please make sure your display name is less than 30 characters long." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            }
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Passwords don't match." message:@"Please make sure your passwords match." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
         }
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Missing Info" message:@"Please fill in all the boxes." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -66,6 +84,7 @@
 
 - (IBAction)dismissKeyboard:(id)sender {
     [self.nameTextField resignFirstResponder];
+    [self.displayNameTextField resignFirstResponder];
     [self.emailTextField resignFirstResponder];
     [self.phoneNumberTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
@@ -151,16 +170,35 @@
     //dont do anything
 }
 
-- (void) textFieldTouched:(UITextField *) sender {
-//    CGPoint pt;
-//    CGRect rc = [sender bounds];
-//    rc = [sender convertRect:rc toView:self.scrollView];
-//    pt = rc.origin;
-//    pt.x = self.scrollView.contentOffset.x;
-//    //pt.y -= 60;
-//    //pt.y -= 40 - pow(self.scrollView.zoomScale, 3.1371) * 15;
-//    pt.y -= 100;
-//    [self.scrollView setContentOffset:pt animated:YES];
+- (IBAction)textFieldDidBeginEditing:(UITextField *)sender {
+    self.activeField = sender;
+}
+
+- (IBAction)textFieldDidEndEditing:(UITextField *)sender {
+    self.activeField = nil;
+}
+
+- (void) keyboardDidShow:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    kbRect = [self.view convertRect:kbRect fromView:nil];
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbRect.size.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbRect.size.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin)) {
+        [self.scrollView scrollRectToVisible:self.activeField.frame animated:TRUE];
+    }
+}
+
+- (void) keyboardWillBeHidden:(NSNotification *)notification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
 }
 
 @end

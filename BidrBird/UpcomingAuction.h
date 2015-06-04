@@ -14,12 +14,12 @@
 
 @interface UpcomingAuction : Auction {
     @public
-    NSMutableArray *items;
+    NSMutableDictionary *items;
 }
 
--(id) initWithItems:(NSMutableArray*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
+-(id) initWithItems:(NSMutableDictionary*)items name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc;
 
-- (NSMutableArray*) getItems;
+- (NSDictionary*) getItems;
 
 @end
 

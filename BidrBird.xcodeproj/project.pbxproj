@@ -19,7 +19,7 @@
 		14754AEE1A300A370002CAB2 /* OngoingAuction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AED1A300A370002CAB2 /* OngoingAuction.m */; };
 		149A80841AAC716E00319A19 /* CompleteAuctionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14754AE51A2FB4CC0002CAB2 /* CompleteAuctionTableViewController.m */; };
 		14DDA4ED1AE57AB1007FCA42 /* AuctionsPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14DDA4EC1AE57AB1007FCA42 /* AuctionsPageViewController.m */; };
-		14DDA4F01AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.m */; };
+		14DDA4F01AE57C39007FCA42 /* UpcomingAuctionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableViewController.m */; };
 		14DDA4F31AE57C50007FCA42 /* OngoingAuctionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14DDA4F21AE57C50007FCA42 /* OngoingAuctionsTableViewController.m */; };
 		14DDA4F61AE57C69007FCA42 /* CompleteAuctionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14DDA4F51AE57C69007FCA42 /* CompleteAuctionsTableViewController.m */; };
 		14E290F41A71983200924EEE /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E290F31A71983200924EEE /* NavigationController.m */; };
@@ -30,6 +30,7 @@
 		14E4D0761A1EB46D005EA29D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14E4D0751A1EB46D005EA29D /* Images.xcassets */; };
 		14E4D0791A1EB46D005EA29D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E4D0771A1EB46D005EA29D /* LaunchScreen.xib */; };
 		14E4D08F1A1FEE61005EA29D /* ConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */; };
+		14F25A151B04F5EF0027D28A /* UIImage+resizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F25A141B04F5EF0027D28A /* UIImage+resizeImage.m */; };
 		14FA062F1AABC6460070821E /* UpcomingAuction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA062E1AABC6460070821E /* UpcomingAuction.m */; };
 		14FA06321AABC7830070821E /* Auction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA06311AABC7830070821E /* Auction.m */; };
 		14FA06381AABCDE90070821E /* UpcomingAuctionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14FA06371AABCDE90070821E /* UpcomingAuctionTableViewController.m */; };
@@ -62,8 +63,8 @@
 		14754AEF1A300A470002CAB2 /* OngoingAuction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OngoingAuction.h; sourceTree = "<group>"; };
 		14DDA4EB1AE57AB1007FCA42 /* AuctionsPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionsPageViewController.h; sourceTree = "<group>"; };
 		14DDA4EC1AE57AB1007FCA42 /* AuctionsPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuctionsPageViewController.m; sourceTree = "<group>"; };
-		14DDA4EE1AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuctionsTableTableViewController.h; sourceTree = "<group>"; };
-		14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuctionsTableTableViewController.m; sourceTree = "<group>"; };
+		14DDA4EE1AE57C39007FCA42 /* UpcomingAuctionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuctionsTableViewController.h; sourceTree = "<group>"; };
+		14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuctionsTableViewController.m; sourceTree = "<group>"; };
 		14DDA4F11AE57C50007FCA42 /* OngoingAuctionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OngoingAuctionsTableViewController.h; sourceTree = "<group>"; };
 		14DDA4F21AE57C50007FCA42 /* OngoingAuctionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OngoingAuctionsTableViewController.m; sourceTree = "<group>"; };
 		14DDA4F41AE57C69007FCA42 /* CompleteAuctionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteAuctionsTableViewController.h; sourceTree = "<group>"; };
@@ -84,6 +85,8 @@
 		14E4D0841A1EB46E005EA29D /* BidrBirdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BidrBirdTests.m; sourceTree = "<group>"; };
 		14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintManager.m; sourceTree = "<group>"; };
 		14E4D0901A1FEFE0005EA29D /* ConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintManager.h; sourceTree = "<group>"; };
+		14F25A131B04F5EF0027D28A /* UIImage+resizeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+resizeImage.h"; sourceTree = "<group>"; };
+		14F25A141B04F5EF0027D28A /* UIImage+resizeImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+resizeImage.m"; sourceTree = "<group>"; };
 		14FA062D1AABC6460070821E /* UpcomingAuction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingAuction.h; sourceTree = "<group>"; };
 		14FA062E1AABC6460070821E /* UpcomingAuction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingAuction.m; sourceTree = "<group>"; };
 		14FA06301AABC7830070821E /* Auction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auction.h; sourceTree = "<group>"; };
@@ -110,8 +113,8 @@
 		14DDA4F71AE57C79007FCA42 /* AuctionsTableViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				14DDA4EE1AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.h */,
-				14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.m */,
+				14DDA4EE1AE57C39007FCA42 /* UpcomingAuctionsTableViewController.h */,
+				14DDA4EF1AE57C39007FCA42 /* UpcomingAuctionsTableViewController.m */,
 				14DDA4F11AE57C50007FCA42 /* OngoingAuctionsTableViewController.h */,
 				14DDA4F21AE57C50007FCA42 /* OngoingAuctionsTableViewController.m */,
 				14DDA4F41AE57C69007FCA42 /* CompleteAuctionsTableViewController.h */,
@@ -161,6 +164,8 @@
 				1440A85B1ADDF76D00370647 /* UserSessionInfo.m */,
 				14E4D0901A1FEFE0005EA29D /* ConstraintManager.h */,
 				14E4D08E1A1FEE61005EA29D /* ConstraintManager.m */,
+				14F25A131B04F5EF0027D28A /* UIImage+resizeImage.h */,
+				14F25A141B04F5EF0027D28A /* UIImage+resizeImage.m */,
 				14318C581A9180D900CE1797 /* HTTPRequest.h */,
 				14318C591A9180D900CE1797 /* HTTPRequest.m */,
 				14E4D0721A1EB46D005EA29D /* Main.storyboard */,
@@ -202,12 +207,12 @@
 			children = (
 				14FA06301AABC7830070821E /* Auction.h */,
 				14FA06311AABC7830070821E /* Auction.m */,
-				14754AE31A2EAD570002CAB2 /* CompleteAuction.h */,
-				14754AE11A2EAD480002CAB2 /* CompleteAuction.m */,
-				14754AEF1A300A470002CAB2 /* OngoingAuction.h */,
-				14754AED1A300A370002CAB2 /* OngoingAuction.m */,
 				14FA062D1AABC6460070821E /* UpcomingAuction.h */,
 				14FA062E1AABC6460070821E /* UpcomingAuction.m */,
+				14754AEF1A300A470002CAB2 /* OngoingAuction.h */,
+				14754AED1A300A370002CAB2 /* OngoingAuction.m */,
+				14754AE31A2EAD570002CAB2 /* CompleteAuction.h */,
+				14754AE11A2EAD480002CAB2 /* CompleteAuction.m */,
 			);
 			name = Auctions;
 			sourceTree = "<group>";
@@ -325,7 +330,7 @@
 				14754AE21A2EAD480002CAB2 /* CompleteAuction.m in Sources */,
 				14754ACD1A2E6D000002CAB2 /* Item.m in Sources */,
 				14DDA4F31AE57C50007FCA42 /* OngoingAuctionsTableViewController.m in Sources */,
-				14DDA4F01AE57C39007FCA42 /* UpcomingAuctionsTableTableViewController.m in Sources */,
+				14DDA4F01AE57C39007FCA42 /* UpcomingAuctionsTableViewController.m in Sources */,
 				14754ABB1A2E58060002CAB2 /* RegisterViewController.m in Sources */,
 				14E4D0711A1EB46D005EA29D /* LogInViewController.m in Sources */,
 				14DDA4ED1AE57AB1007FCA42 /* AuctionsPageViewController.m in Sources */,
@@ -337,6 +342,7 @@
 				14FA062F1AABC6460070821E /* UpcomingAuction.m in Sources */,
 				14FA063F1AAC661C0070821E /* Bid.m in Sources */,
 				14DDA4F61AE57C69007FCA42 /* CompleteAuctionsTableViewController.m in Sources */,
+				14F25A151B04F5EF0027D28A /* UIImage+resizeImage.m in Sources */,
 				14FA06321AABC7830070821E /* Auction.m in Sources */,
 				14E4D06B1A1EB46D005EA29D /* main.m in Sources */,
 				149A80841AAC716E00319A19 /* CompleteAuctionTableViewController.m in Sources */,
@@ -459,7 +465,7 @@
 				INFOPLIST_FILE = BidrBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "bd1cbe79-d7d6-4dfc-93b8-103a4edd965b";
+				PROVISIONING_PROFILE = "55c9e7f8-f686-4243-b2be-cbf5d829b193";
 			};
 			name = Debug;
 		};
@@ -472,7 +478,7 @@
 				INFOPLIST_FILE = BidrBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "bd1cbe79-d7d6-4dfc-93b8-103a4edd965b";
+				PROVISIONING_PROFILE = "55c9e7f8-f686-4243-b2be-cbf5d829b193";
 			};
 			name = Release;
 		};

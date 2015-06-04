@@ -16,11 +16,26 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-   // Override point for customization after application launch.
     
-    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {        
+        UIUserNotificationSettings *settings =
+        [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert |
+         UIUserNotificationTypeBadge |
+         UIUserNotificationTypeSound
+                                          categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         UIRemoteNotificationTypeAlert |
+         UIRemoteNotificationTypeBadge |
+         UIRemoteNotificationTypeSound];
+    }
     
-   return YES;
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -46,6 +61,10 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSString *token = [deviceToken description];
+    token = [token stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    self.deviceToken = token;
     NSLog(@"Did Register for Remote Notifications with Device Token (%@)", deviceToken);
 }
 
@@ -54,12 +73,27 @@
     NSLog(@"%@, %@", error, error.localizedDescription);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    NSLog(@"Did Receive Remote Notification, fetch completeion handler");
-}
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+//    NSLog(@"Did Receive Remote Notification, fetch completeion handler");
+//}
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"Did Receive Remote Notification");
+//    if ([application applicationState] == UIApplicationStateInactive) {
+//        
+//    } else if ([application applicationState] == UIApplicationStateBackground) {
+//        
+//    } else if ([application applicationState] == UIApplicationStateActive) {
+//        
+//    }
+    NSString *displayName = [userInfo objectForKey:@"display_name"];
+    NSString *itemName = [userInfo objectForKey:@"item_name"];
+    int amount = [(NSNumber *)[userInfo objectForKey:@"amount"] intValue];
+    int itemID = [(NSNumber *)[userInfo objectForKey:@"item_id"] intValue];
+    int aucitonID = [(NSNumber *)[userInfo objectForKey:@"auct_id"] intValue];
+                  
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You've been outbid!" message:[NSString stringWithFormat:@"%@ outbid you on the item \"%@\" with a bid of $%d.", displayName, itemName, amount] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

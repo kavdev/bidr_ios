@@ -10,22 +10,16 @@
 
 @implementation OngoingAuction
 
--(id) initWithBidOnItems:(NSMutableArray*)items otherItems:(NSMutableArray*)otherItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
-   self->bidOnItems = items;
-   self->otherItems = otherItems;
-   self->name = name;
-   self->picture = picture;
+-(id) initWithWinningItems:(NSMutableDictionary*)winning losingItems:(NSMutableDictionary*)losing unbidItems:(NSMutableDictionary*)unbid name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc {
+    self->winningItems = winning;
+    self->losingItems = losing;
+    self->unbidItems = unbid;
+    self->name = name;
+    self->picture = picture;
     self->auctionID = auctionid;
+    self->minBidInc = minBidInc;
    
    return self;
-}
-
-- (NSMutableArray*) getBidOnItems {
-   return self->bidOnItems;
-}
-
-- (NSMutableArray*) getOtherItems {
-   return self->otherItems;
 }
 
 @end

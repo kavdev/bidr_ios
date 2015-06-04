@@ -10,9 +10,10 @@
 
 @implementation Bid
 
--(id) initWithAmount:(double)amount userID:(int)userID; {
+-(id) initWithAmount:(int)amount userID:(int)userID displayName:(NSString *)displayName; {
     self->amount = amount;
     self->userID = userID;
+    self->displayName = displayName;
     
     return self;
 }

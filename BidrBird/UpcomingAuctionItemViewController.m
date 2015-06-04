@@ -18,8 +18,8 @@
     [super viewDidLoad];
     
     self.imageView.image = self->item.getPicture;
-    self.minBidLabel.text = [NSString stringWithFormat:@"Minimum Bid: $ %.2lf", self->item->minBid];
-    self.descriptionLabel.text = self->item.getDescription;
+    self.minBidLabel.text = [NSString stringWithFormat:@"Minimum Bid: $ %d", self->item->minBid];
+    self.descriptionTextView.text = self->item.getDescription;
     
     UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];
     navCon.navigationItem.title = self->item.getName;
@@ -30,8 +30,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (id) initWithItem:(Item*)item {
+- (id) initWithItem:(Item*)item fromAuctionWithID:(NSString *)auctionID userSessionInfo:(UserSessionInfo *)info{
     self->item = item;
+    self->auctionID = auctionID;
+    
+    self->userSessionInfo = info;
     
     return self;
 }

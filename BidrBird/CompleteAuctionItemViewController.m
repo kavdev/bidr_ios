@@ -18,8 +18,8 @@
     [super viewDidLoad];
    
    self.imageView.image = self->item.getPicture;
-   self.wonForLabel.text = [NSString stringWithFormat:@"Won for: $ %.2f", self->item.getHightestBid];
-   self.descriptionLabel.text = self->item.getDescription;
+   self.wonForLabel.text = [NSString stringWithFormat:@"Won for: $ %d", self->item.getHightestBid->amount];
+    self.descriptionTextView.text = self->item.getDescription;
    
    UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers indexOfObject:self]];
    navCon.navigationItem.title = self->item.getName;
@@ -32,8 +32,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (id) initWithItem:(Item*)item {
-   self->item = item;
+- (id) initWithItem:(Item*)item fromAuctionWithID:(NSString *)auctionID userSessionInfo:(UserSessionInfo *)info {
+    self->item = item;
+    self->auctionID = auctionID;
+    
+    self->userSessionInfo = info;
    
    return self;
 }

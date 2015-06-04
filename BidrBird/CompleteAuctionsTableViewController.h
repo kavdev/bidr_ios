@@ -11,13 +11,14 @@
 #import "CompleteAuction.h"
 #import "Auction.h"
 #import "CompleteAuctionTableViewController.h"
-#import "NavigationController.h"
 #import "HTTPRequest.h"
 #import "AuctionsPageViewController.h"
 
 @interface CompleteAuctionsTableViewController : UITableViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
+    @public
     NSMutableData *responseData;
     BOOL loggedOut;
+    UserSessionInfo *userSessionInfo;
 }
 
 @end

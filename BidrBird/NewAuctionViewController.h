@@ -14,14 +14,26 @@
 #import "UpcomingAuction.h"
 #import "UpcomingAuctionTableViewController.h"
 #import "HTTPRequest.h"
-#import "NavigationController.h"
+
+@class NewAuctionViewController;
+
+@protocol NewAuctionViewProtocol
+- (void) addUpcomingAuction:(UpcomingAuction *)auction;
+- (void) addOngoingAuction:(OngoingAuction *)auction;
+- (void) addCompleteAuction:(CompleteAuction *)auction;
+@end
 
 @interface NewAuctionViewController : UIViewController <NSURLConnectionDelegate, NSURLConnectionDataDelegate, UIPopoverControllerDelegate> {
+    @public
     NSMutableData *responseData;
+    UserSessionInfo *userSessionInfo;
 }
 
 @property (strong, nonatomic) IBOutlet UITextField *auctionIDTextEditor;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextEditor;
+@property (strong, nonatomic) IBOutlet UIButton *connectButton;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) id <NewAuctionViewProtocol, OngoinAuctionTableViewDelegate, UpcomingAuctionTableViewProtocol> delegate;
 
 - (IBAction)connectToAuction:(id)sender;
 

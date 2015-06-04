@@ -14,14 +14,12 @@
 
 @interface OngoingAuction : Auction {
     @public
-    NSMutableArray *bidOnItems;
-    NSMutableArray *otherItems;
+    NSMutableDictionary *winningItems;
+    NSMutableDictionary *losingItems;
+    NSMutableDictionary *unbidItems;
 }
 
--(id) initWithBidOnItems:(NSMutableArray*)items otherItems:(NSMutableArray*)otherItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture;
-
-- (NSMutableArray*) getBidOnItems;
-- (NSMutableArray*) getOtherItems;
+-(id) initWithWinningItems:(NSMutableDictionary*)winning losingItems:(NSMutableDictionary*)losing unbidItems:(NSMutableDictionary*)unbid name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture  minBidInc:(int)minBidInc;
 
 @end
 

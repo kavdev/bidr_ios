@@ -12,8 +12,6 @@
 	<dict>
 		<key>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</key>
 		<string>https://bitbucket.org/windows9/bidr_ios.git</string>
-		<key>EEBC84A0A3FAF3B71B8F2AC323872CC18DADFFF3</key>
-		<string>https://bitbucket.org/windows9/bidr_project.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>BidrBird.xcodeproj</string>
@@ -21,8 +19,6 @@
 	<dict>
 		<key>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</key>
 		<string>../..</string>
-		<key>EEBC84A0A3FAF3B71B8F2AC323872CC18DADFFF3</key>
-		<string>../../../projects/bidr_project</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://bitbucket.org/windows9/bidr_ios.git</string>
@@ -32,14 +28,6 @@
 	<string>AC1DE0B6715F030CCB63F6E4A6D249A1A0C74728</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>EEBC84A0A3FAF3B71B8F2AC323872CC18DADFFF3</string>
-			<key>IDESourceControlWCCName</key>
-			<string>bidr_project</string>
-		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

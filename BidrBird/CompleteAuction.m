@@ -12,21 +12,22 @@
 
 @implementation CompleteAuction
 
-- (id) initWithWonItems:(NSMutableArray*)wonItems lostItems:(NSMutableArray *)lostItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture {
+- (id) initWithWonItems:(NSMutableDictionary*)wonItems lostItems:(NSMutableDictionary *)lostItems name:(NSString*)name auctionID:(NSString *)auctionid picture:(UIImage*)picture minBidInc:(int)minBidInc {
     self->wonItems = wonItems;
     self->lostItems = lostItems;
     self->name = name;
     self->picture = picture;
     self->auctionID = auctionid;
+    self->minBidInc =  minBidInc;
    
    return self;
 }
 
-- (NSMutableArray*) getWonItems {
+- (NSMutableDictionary*) getWonItems {
     return self->wonItems;
 }
 
-- (NSMutableArray *) getLostItems {
+- (NSMutableDictionary *) getLostItems {
     return  self->lostItems;
 }
 
